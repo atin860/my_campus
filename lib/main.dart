@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_campus/screens/home_scr.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+
 import 'package:my_campus/screens/splash_scr.dart';
-import 'package:my_campus/widget/constant.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
    
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SplashScr()
+      home:   SplashScr()
     );
   }
 }
