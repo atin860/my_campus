@@ -1,6 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_campus/Controller/controller.dart';
+
 import 'package:my_campus/screens/auth_view/login_scr.dart';
 import 'package:my_campus/widget/app_button.dart';
 
@@ -14,6 +16,9 @@ class RegisterScr extends StatefulWidget {
 }
 
 class _RegisterScrState extends State<RegisterScr> {
+  MainController controller = Get.find();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -46,15 +51,17 @@ class _RegisterScrState extends State<RegisterScr> {
                                     blurRadius: 30.0,
                                     offset: Offset(0, 20))
                               ]),
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Column(
                                 children: [
                                   MyTextField(
+                                      controller: email,
                                       label: "Email",
                                       hintText: "biet14@gmail.com"),
                                   MyTextField(
+                                    controller: password,
                                     label: "Password",
                                     hintText: "biet@123",
                                   ),
@@ -69,7 +76,10 @@ class _RegisterScrState extends State<RegisterScr> {
                         child: AppButton(
                           hint: "Register",
                           onPressed: () {
-                            Get.to(() => const LoginScr());
+                            controller.signup(
+                              email.text,
+                              password.text,
+                            );
                           },
                         )),
                     const SizedBox(
@@ -104,7 +114,7 @@ class _RegisterScrState extends State<RegisterScr> {
       height: 400,
       decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/img/background.png'),
+              image: AssetImage('assets/png/background.png'),
               fit: BoxFit.fill)),
       child: Stack(
         children: <Widget>[
@@ -117,7 +127,7 @@ class _RegisterScrState extends State<RegisterScr> {
                 child: Container(
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/img/light-1.png'))),
+                          image: AssetImage('assets/png/light-1.png'))),
                 )),
           ),
           Positioned(
@@ -129,7 +139,7 @@ class _RegisterScrState extends State<RegisterScr> {
                 child: Container(
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/img/light-2.png'))),
+                          image: AssetImage('assets/png/light-2.png'))),
                 )),
           ),
           Positioned(
@@ -142,7 +152,7 @@ class _RegisterScrState extends State<RegisterScr> {
                 child: Container(
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/img/clock.png'))),
+                          image: AssetImage('assets/png/clock.png'))),
                 )),
           ),
           Positioned(

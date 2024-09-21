@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:my_campus/screens/auth_view/register_scr.dart';
 import 'package:my_campus/screens/home_scr.dart';
 import 'package:my_campus/widget/constant.dart';
 
@@ -19,7 +20,7 @@ class _SplashScrState extends State<SplashScr> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => RegisterScr()),
       );
     });
   }

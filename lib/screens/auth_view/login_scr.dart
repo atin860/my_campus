@@ -119,7 +119,7 @@ class _LoginScrState extends State<LoginScr> {
       height: 400,
       decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/img/background.png'),
+              image: AssetImage('assets/png/background.png'),
               fit: BoxFit.fill)),
       child: Stack(
         children: <Widget>[
@@ -132,7 +132,7 @@ class _LoginScrState extends State<LoginScr> {
                 child: Container(
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/img/light-1.png'))),
+                          image: AssetImage('assets/png/light-1.png'))),
                 )),
           ),
           Positioned(
@@ -144,7 +144,7 @@ class _LoginScrState extends State<LoginScr> {
                 child: Container(
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/img/light-2.png'))),
+                          image: AssetImage('assets/png/light-2.png'))),
                 )),
           ),
           Positioned(
@@ -157,7 +157,7 @@ class _LoginScrState extends State<LoginScr> {
                 child: Container(
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/img/clock.png'))),
+                          image: AssetImage('assets/png/clock.png'))),
                 )),
           ),
           Positioned(

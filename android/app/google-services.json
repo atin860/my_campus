@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "430206675086",
+    "project_id": "ai-campus-admin-3ea0d",
+    "storage_bucket": "ai-campus-admin-3ea0d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430206675086:android:370cbc75a41ba561e881df",
+        "android_client_info": {
+          "package_name": "com.atin.vsafe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMOdSukah-3HYj2NbUEHtJ5pHl2Oy3-kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,3 +16,8 @@ const kcontainerTextStyle =
 
 // for button text style
 const kbuttonTextStyle = TextStyle(fontSize: 20);
+
+const kappbarTextStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 25.0,
+    color: Color.fromARGB(255, 255, 255, 255));
