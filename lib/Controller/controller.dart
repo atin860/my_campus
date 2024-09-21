@@ -94,7 +94,7 @@ class MainController extends GetxController {
     showLoading();
     await auth.signOut();
     dismissLoadingWidget();
-    successMessage("logout User");
+    successMessage("logout Succesfully");
   }
 
 // Forget button controller

@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:my_campus/Controller/controller.dart';
+import 'package:my_campus/screens/auth_view/user_data.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/appcontainer.dart';
 
@@ -40,7 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.logout();
+                    },
                     icon: const Icon(
                       Icons.logout,
                       color: Colors.white,
@@ -91,7 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
             MyContainer(
               name: 'Notes',
               image: 'notes',
-              onPressed: () {},
+              onPressed: () {
+                Get.to(()=>UserDataScr());
+              },
             ),
           ],
         ),
