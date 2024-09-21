@@ -1,8 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_instance/get_instance.dart';
+import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/widget/app_button.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/textfield.dart';
+import 'package:my_campus/widget/toast_msg.dart';
 
 class ForgetScr extends StatefulWidget {
   const ForgetScr({super.key});
@@ -12,9 +16,13 @@ class ForgetScr extends StatefulWidget {
 }
 
 class _ForgetScrState extends State<ForgetScr> {
+  MainController controller = Get.find();
+  final TextEditingController email = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: GestureDetector(
         onPanDown: (_) {
@@ -25,19 +33,19 @@ class _ForgetScrState extends State<ForgetScr> {
             children: <Widget>[
               Backgroundview(),
               Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30),
+                padding: EdgeInsets.only(left: 30, right: 30),
                 child: Column(
                   children: [
                     FadeInUp(
-                        duration: const Duration(milliseconds: 1800),
+                        duration: Duration(milliseconds: 1800),
                         child: Container(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           height: screenHeight * 0.22,
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
-                              border:
-                                  Border.all(width: 2, color: kprimaryColors),
+                              // border:
+                              //     Border.all(width: 2, color: kprimaryColors),
                               boxShadow: const [
                                 BoxShadow(
                                     color: Color.fromRGBO(94, 171, 239, 0.842),
@@ -49,15 +57,20 @@ class _ForgetScrState extends State<ForgetScr> {
                             children: [
                               Column(
                                 children: [
-                                  const MyTextField(
+                                  MyTextField(
+                                      controller: email,
                                       label: "Email",
                                       hintText: "biet14@gmail.com"),
                                   FadeInUp(
-                                      duration:
-                                          const Duration(milliseconds: 1800),
+                                      duration: Duration(milliseconds: 1800),
                                       child: AppButton(
                                         hint: "Send",
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          if (validate()) {
+                                            controller
+                                                .forgetPassword(email.text);
+                                          }
+                                        },
                                       )),
                                 ],
                               ),
@@ -74,6 +87,15 @@ class _ForgetScrState extends State<ForgetScr> {
     );
   }
 
+  bool validate() {
+    if (email.text.isEmpty) {
+      showToastMessage('Please enter email.');
+      return false;
+    }
+    return true;
+  }
+
+//back gorund decoration
   Container Backgroundview() {
     return Container(
       height: 400,

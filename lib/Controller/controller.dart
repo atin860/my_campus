@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:my_campus/screens/auth_view/register_scr.dart';
+import 'package:my_campus/screens/auth_view/login_scr.dart';
 import 'package:my_campus/screens/home_scr.dart';
 import 'package:my_campus/widget/loading.dart';
 import 'package:my_campus/widget/toast_msg.dart';
@@ -12,10 +12,10 @@ import 'package:my_campus/widget/toast_msg.dart';
 class MainController extends GetxController {
   @override
   void onReady() {
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       auth.userChanges().listen((user) {
         if (user == null) {
-          Get.offAll(() => RegisterScr());
+          Get.offAll(() => LoginScr());
         } else {
           // Get.offAll(() => MyApp());
           Get.offAll(() => HomeScreen());

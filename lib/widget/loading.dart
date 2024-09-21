@@ -13,10 +13,9 @@ showLoading([String? text]) => Get.defaultDialog(
     title: "Loading...",
     content: Column(
       children: [
-        SpinKitFadingCube(
-          color: Colors.blue,
-          size: 50.0,
-        ),
+        SpinKitDualRing(
+            color: Colors.cyan,
+          ),
         if (text != null)
           Column(
             children: [

@@ -5,8 +5,8 @@ import 'package:my_campus/Controller/binding.dart';
 import 'package:my_campus/screens/splash_scr.dart';
 
 void main() async{
-   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

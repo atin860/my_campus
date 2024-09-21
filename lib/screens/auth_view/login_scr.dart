@@ -1,11 +1,13 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/screens/auth_view/forget_scr.dart';
 import 'package:my_campus/screens/auth_view/register_scr.dart';
 import 'package:my_campus/widget/app_button.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/textfield.dart';
+import 'package:my_campus/widget/toast_msg.dart';
 
 class LoginScr extends StatefulWidget {
   const LoginScr({super.key});
@@ -15,6 +17,9 @@ class LoginScr extends StatefulWidget {
 }
 
 class _LoginScrState extends State<LoginScr> {
+  MainController controller= Get.find();
+  final TextEditingController email = TextEditingController();
+   final TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -37,6 +42,10 @@ class _LoginScrState extends State<LoginScr> {
                           padding: const EdgeInsets.all(8.0),
                           height: screenHeight * 0.22,
                           decoration: BoxDecoration(
+                            image:DecorationImage(
+                              
+                              colorFilter: ColorFilter.linearToSrgbGamma(),
+                              image: AssetImage("assets/img/back1.jpg"),fit: BoxFit.cover,),
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                               // border: Border.all(width: 2, color: kprimaryColors),
@@ -46,15 +55,17 @@ class _LoginScrState extends State<LoginScr> {
                                     blurRadius: 30.0,
                                     offset: Offset(0, 20))
                               ]),
-                          child: const Column(
+                          child:  Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Column(
                                 children: [
                                   MyTextField(
+                                    controller: email,
                                       label: "Email",
                                       hintText: "biet14@gmail.com"),
                                   MyTextField(
+                                    controller: password,
                                     label: "Password",
                                     hintText: "biet@123",
                                   ),
@@ -70,7 +81,9 @@ class _LoginScrState extends State<LoginScr> {
                         duration: const Duration(milliseconds: 1800),
                         child: AppButton(
                           hint: "Login",
-                          onPressed: () {},
+                          onPressed: () {
+                             if (validate()) controller.login(email.text, password.text);
+                          },
                         )),
                     const SizedBox(
                       height: 40,
@@ -112,6 +125,20 @@ class _LoginScrState extends State<LoginScr> {
       ),
     );
   }
+
+
+   bool validate() {
+    if (email.text.isEmpty) {
+      showToastMessage('Please enter email.');
+      return false;
+    }
+    if (password.text.isEmpty) {
+      showToastMessage('Please enter password.');
+      return false;
+    }
+    return true;
+  }
+}
 
 // this is background backview decoartion
   Container Backgroundview() {
@@ -180,4 +207,4 @@ class _LoginScrState extends State<LoginScr> {
       ),
     );
   }
-}
+
