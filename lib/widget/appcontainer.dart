@@ -14,7 +14,7 @@ final void Function() onPressed;
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          height: screenHeight * 0.18,
+          height: screenHeight * 0.19,
           width: screenWidth * 0.20,
           padding: EdgeInsets.all(15),
           margin: EdgeInsets.all(8.0),

@@ -48,7 +48,7 @@ class _ForgetScrState extends State<ForgetScr> {
                               //     Border.all(width: 2, color: kprimaryColors),
                               boxShadow: const [
                                 BoxShadow(
-                                    color: Color.fromRGBO(94, 171, 239, 0.842),
+                                    color: Color.fromRGBO(94, 239, 140, 0.839),
                                     blurRadius: 30.0,
                                     offset: Offset(0, 20))
                               ]),

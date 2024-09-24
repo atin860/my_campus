@@ -1,9 +1,6 @@
-import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:my_campus/screens/auth_view/register_scr.dart';
-import 'package:my_campus/screens/home_scr.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class SplashScr extends StatefulWidget {
@@ -16,14 +13,14 @@ class SplashScr extends StatefulWidget {
 class _SplashScrState extends State<SplashScr> {
   @override
   @override
-  void initState() {
-    super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => RegisterScr()),
-      );
-    });
-  }
+  // void initState() {
+  //   super.initState();
+  //   Timer(Duration(seconds: 3), () {
+  //     Navigator.of(context).pushReplacement(
+  //       MaterialPageRoute(builder: (context) => RegisterScr()),
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

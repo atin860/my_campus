@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:my_campus/screens/auth_view/login_scr.dart';
-import 'package:my_campus/screens/home_scr.dart';
+import 'package:my_campus/screens/home.dart';
 import 'package:my_campus/widget/loading.dart';
 import 'package:my_campus/widget/toast_msg.dart';
 
@@ -17,8 +17,7 @@ class MainController extends GetxController {
         if (user == null) {
           Get.offAll(() => LoginScr());
         } else {
-          // Get.offAll(() => MyApp());
-          Get.offAll(() => HomeScreen());
+          Get.offAll(() => HomeScr());
         }
       });
     });

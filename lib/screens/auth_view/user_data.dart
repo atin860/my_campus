@@ -1,8 +1,11 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:my_campus/screens/home_scr.dart';
 import 'package:my_campus/service/firebase_database.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/textfield.dart';
+import 'package:my_campus/widget/toast_msg.dart';
 
 class UserDataScr extends StatefulWidget {
   const UserDataScr({super.key});
@@ -16,6 +19,13 @@ class _UserDataScrState extends State<UserDataScr> {
   TextEditingController rollNo = TextEditingController();
   TextEditingController year = TextEditingController();
   TextEditingController branch = TextEditingController();
+  TextEditingController number = TextEditingController();
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  // Method to update a user
+  Future<void> updateUser(String documentId, Map<String, dynamic> data) {
+    return _db.collection('users').doc(documentId).update(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -49,7 +59,7 @@ class _UserDataScrState extends State<UserDataScr> {
             ],
           )),
           child: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -63,8 +73,11 @@ class _UserDataScrState extends State<UserDataScr> {
                   MyTextField(controller: year, label: 'Year', hintText: "3rd"),
                   MyTextField(
                       controller: branch, label: 'Branch', hintText: "CSE(AI)"),
-                  MyTextField(label: 'Mobile Number', hintText: "7905539159"),
-                  SizedBox(
+                  MyTextField(
+                      controller: number,
+                      label: 'Mobile Number',
+                      hintText: "7905539159"),
+                  const SizedBox(
                     height: 10,
                   ),
                   SizedBox(
@@ -79,23 +92,7 @@ class _UserDataScrState extends State<UserDataScr> {
                               style: kLabelTextStyle,
                             ),
                             onPressed: () {
-                              Map<String, dynamic> data = {
-                                'Name': name.text,
-                                'Roll NO': rollNo.text,
-                              };
-
-                              FireStoreService.instance
-                                  .collection('Users')
-                                  .add(data);
-                              //wapas screen pr nhi aa
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeScreen()),
-                                (Route<dynamic> route) =>
-                                    false, // This condition removes all previous routes.
-                              );
-                              //  addUser();
+                              addUser();
                             }),
                       ))
                 ],
@@ -107,32 +104,32 @@ class _UserDataScrState extends State<UserDataScr> {
     );
   }
 
-  // void addUser() async {
-  //   log("entee");
-  //   FocusManager.instance.primaryFocus!.unfocus();
-  //   Map<String, dynamic> users = {
-  //     "userName": name.text,
-  //     // "Roll NO": rollNo.text,
-  //     // // "age": int.parse(ageController.text.trim()),
-  //     // "year": year,
-  //     // "Branch": branch,
-  //   };
-  //   log("befor adding user:");
-
-  //   Map? res = await FireStoreService.addUser(users);
-  //   log("add");
-  //   if (res == null) {
-  //     log("after addig error addd ni hua");
-  //   }
-
-  //   log("after adding:" + addUser.toString());
-  //   successMessage("Successfully Updated,");
-  //   setState(() {
-  //     name.clear();
-  //     // rollNo.clear();
-  //     // year.clear();
-  //     // branch.clear();
-  //   });
-  //   log('data: $users');
-  // }
+  void addUser() async {
+    log("entee");
+    FocusManager.instance.primaryFocus!.unfocus();
+    Map<String, dynamic> data = {
+      "userName": name.text,
+      "Roll NO": rollNo.text,
+      // "age": int.parse(ageController.text.trim()),
+      "year": year,
+      "Branch": branch,
+      "Number": branch,
+    };
+    log("befor adding user:");
+    FireStoreService.instance.collection('Users').add(data);
+    log("add");
+    if (data == null) {
+      log("after addig error addd ni hua");
+    }
+    log("after adding:" + addUser.toString());
+    successMessage("Successfully Updated,");
+    setState(() {
+      name.clear();
+      rollNo.clear();
+      year.clear();
+      branch.clear();
+      number.clear();
+    });
+    log('data: $data');
+  }
 }

@@ -42,16 +42,18 @@ class _LoginScrState extends State<LoginScr> {
                           padding: const EdgeInsets.all(8.0),
                           height: screenHeight * 0.22,
                           decoration: BoxDecoration(
-                            image:DecorationImage(
+                            // image:DecorationImage(
                               
-                              colorFilter: ColorFilter.linearToSrgbGamma(),
-                              image: AssetImage("assets/img/back1.jpg"),fit: BoxFit.cover,),
+                            //   colorFilter: ColorFilter.linearToSrgbGamma(),
+                            //   image: AssetImage("assets/img/back1.jpg"),fit: BoxFit.cover,
+                              
+                            //   ),
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                               // border: Border.all(width: 2, color: kprimaryColors),
                               boxShadow: const [
                                 BoxShadow(
-                                    color: Color.fromRGBO(94, 171, 239, 0.842),
+                                    color: Color.fromRGBO(113, 239, 94, 0.839),
                                     blurRadius: 30.0,
                                     offset: Offset(0, 20))
                               ]),

@@ -2,9 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_campus/Controller/controller.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_campus/screens/auth_view/login_scr.dart';
-import 'package:my_campus/screens/home_scr.dart';
 import 'package:my_campus/widget/app_button.dart';
 
 import 'package:my_campus/widget/textfield.dart';
@@ -44,18 +42,18 @@ class _RegisterScrState extends State<RegisterScr> {
                           padding: const EdgeInsets.all(8.0),
                           height: screenHeight * 0.22,
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                                colorFilter: ColorFilter.linearToSrgbGamma(),
-                                image: AssetImage("assets/img/back1.jpg"),
-                                fit: BoxFit.cover,
-                              ),
+                              // image: DecorationImage(
+                              //   colorFilter: ColorFilter.linearToSrgbGamma(),
+                              //   image: AssetImage("assets/img/back1.jpg"),
+                              //   fit: BoxFit.cover,
+                              // ),
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                               // border:
                               //Border.all(width: 2, color: kprimaryColors),
                               boxShadow: const [
                                 BoxShadow(
-                                    color: Color.fromRGBO(94, 171, 239, 0.842),
+                                    color: Color.fromRGBO(239, 217, 94, 0.839),
                                     blurRadius: 30.0,
                                     offset: Offset(0, 20))
                               ]),
