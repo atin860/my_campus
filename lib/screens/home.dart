@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -6,6 +6,7 @@ import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/screens/bottombar_scr/sub_attendence.dart';
 import 'package:my_campus/screens/bottombar_scr/profile.dart';
 import 'package:my_campus/screens/box_screens/attendence.dart';
+import 'package:my_campus/screens/box_screens/event.dart';
 import 'package:my_campus/screens/box_screens/faculty.dart';
 import 'package:my_campus/screens/box_screens/id_card.dart';
 import 'package:my_campus/screens/box_screens/notes_scr.dart';
@@ -65,7 +66,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
   MainController controller = Get.find();
 
   // Function to open a website URL
@@ -119,16 +119,18 @@ class _HomeScreenState extends State<HomeScreen> {
   // Function to handle bottom navigation item tap
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
     });
   }
 
   final List<String> imgList = [
     // 'assets/img/back1.jpg',
     'assets/img/back2.jpg',
-    'assets/img/back3.jpg',
+    'assets/img/back7.JPG',
     'assets/img/back4.JPG',
-    'assets/img/back5.jpg', // Add more images here
+    'assets/img/back5.jpg',
+    'assets/img/back6.JPG',
+    'assets/img/back3.jpg',
+    // Add more images here
   ];
 
   @override
@@ -137,7 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: kBackgroundColors,
         title: const Text("HELLO ATIN!", style: kLabelTextStyle),
-
       ),
       drawer: _buildCustomDrawer(),
       body: ListView(
@@ -231,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
               name: 'Website',
               image: 'web',
               onPressed: () {
-                log("web button tap");
+         
                 _weburl();
               },
             ),
@@ -256,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
               name: 'Quiz',
               image: 'quiz',
               onPressed: () {
-                Get.to(()=>QuizScreen());
+                Get.to(() => QuizScreen());
               },
             ),
           ],
@@ -267,7 +268,9 @@ class _HomeScreenState extends State<HomeScreen> {
             MyContainer(
               name: 'Event',
               image: 'events',
-              onPressed: () {},
+              onPressed: () {
+                Get.to(()=>EventScreen());
+              },
             ),
             MyContainer(
               name: 'Assignment',
