@@ -3,15 +3,14 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:my_campus/Controller/controller.dart';
-import 'package:my_campus/screens/auth_view/user_data.dart';
 import 'package:my_campus/screens/bottombar_scr/sub_attendence.dart';
 import 'package:my_campus/screens/bottombar_scr/profile.dart';
 import 'package:my_campus/screens/box_screens/attendence.dart';
 import 'package:my_campus/screens/box_screens/faculty.dart';
 import 'package:my_campus/screens/box_screens/id_card.dart';
 import 'package:my_campus/screens/box_screens/notes_scr.dart';
+import 'package:my_campus/screens/box_screens/quiz.dart';
 import 'package:my_campus/screens/box_screens/team.dart';
-
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/appcontainer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,11 +24,11 @@ class HomeScr extends StatefulWidget {
 }
 
 class _HomeScrState extends State<HomeScr> {
+  // bottom bar
   int _selectedIndex = 0;
-
   static final List<Widget> _screens = <Widget>[
     HomeScreen(),
-    const AttendanceSearchScreen(),
+    AttendanceSearchScreen(),
     ProfileScreen(),
   ];
 
@@ -138,17 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: kBackgroundColors,
         title: const Text("HELLO ATIN!", style: kLabelTextStyle),
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.only(right: 10),
-        //     child: IconButton(
-        //       onPressed: () {
-        //         controller.logout();
-        //       },
-        //       icon: const Icon(Icons.logout, color: Colors.white),
-        //     ),
-        //   ),
-        // ],
+
       ),
       drawer: _buildCustomDrawer(),
       body: ListView(
@@ -266,7 +255,9 @@ class _HomeScreenState extends State<HomeScreen> {
             MyContainer(
               name: 'Quiz',
               image: 'quiz',
-              onPressed: () {},
+              onPressed: () {
+                Get.to(()=>QuizScreen());
+              },
             ),
           ],
         ),
