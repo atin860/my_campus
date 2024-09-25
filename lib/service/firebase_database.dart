@@ -1,12 +1,17 @@
 
+import 'dart:io';
+import 'package:path/path.dart'; // For getting file name
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/widget/toast_msg.dart';
 
 class FireStoreService {
   static FirebaseFirestore instance = FirebaseFirestore.instance;
-  static CollectionReference tasks = instance.collection('tasks');
+  // static CollectionReference tasks = instance.collection('tasks');
   static CollectionReference users = instance.collection('users');
+  static CollectionReference notes = instance.collection('notes');
 
 
 //Add user data in firebase
@@ -49,6 +54,41 @@ class FireStoreService {
     }
   }
 
+
+  // Method to upload PDF to Firebase Storage
+  static Future<String?> uploadPdfToStorage(File pdfFile) async {
+    try {
+      String fileName = basename(pdfFile.path); // Get file name
+      Reference storageRef = FirebaseStorage.instance.ref().child('pdfs/$fileName');
+      UploadTask uploadTask = storageRef.putFile(pdfFile);
+
+      // Wait for the upload to complete
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL(); // Get download URL
+
+      return downloadUrl; // Return the URL of the uploaded PDF
+    } catch (e) {
+      showToastMessage("Error uploading PDF: $e");
+      return null;
+    }
+  }
+
+  // Method to add note data (with PDF URL) to Firestore
+  static Future<bool> addNoteWithPdf(String title, String pdfUrl) async {
+    try {
+      await notes.add({
+        'title': title,
+        'pdfUrl': pdfUrl,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+      showToastMessage("Note added successfully");
+      return true;
+    } catch (e) {
+      showToastMessage("Error adding note: $e");
+      return false;
+    }
+  }
+}
 
 // // task function .....1..................................................
 //   static Future<Map?> addTask(Map<String, dynamic> data) async {
@@ -99,4 +139,3 @@ class FireStoreService {
 //     }
 //   }
 
-}

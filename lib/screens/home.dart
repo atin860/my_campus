@@ -9,6 +9,7 @@ import 'package:my_campus/screens/bottombar_scr/profile.dart';
 import 'package:my_campus/screens/box_screens/attendence.dart';
 import 'package:my_campus/screens/box_screens/faculty.dart';
 import 'package:my_campus/screens/box_screens/id_card.dart';
+import 'package:my_campus/screens/box_screens/notes_scr.dart';
 import 'package:my_campus/screens/box_screens/team.dart';
 
 import 'package:my_campus/widget/constant.dart';
@@ -249,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
               name: 'Notes',
               image: 'notes',
               onPressed: () {
-                Get.to(() => ());
+                Get.to(() => NotesScreen());
               },
             ),
           ],

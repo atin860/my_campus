@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/constant.dart';
 
 class FacultyListScreen extends StatelessWidget {
   const FacultyListScreen({Key? key}) : super(key: key);
@@ -7,13 +8,13 @@ class FacultyListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Meet Our Faculty"),
+        title: const Text("Meet Our Faculty",style: kLabelTextStyle,),
         backgroundColor: Colors.blueAccent,
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blueAccent, Colors.lightBlueAccent],
+            colors: [Colors.blueAccent, const Color.fromARGB(255, 221, 206, 161)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -165,14 +166,14 @@ class FacultyMember {
 // Sample Faculty Members Data
 final List<FacultyMember> facultyMembers = [
   FacultyMember(
-    name: "Dr. Atin Sharma",
-    department: "Computer Science",
+    name: "Dr. Sameer Awasthi",
+    department: "Head Of Dipartment",
     description: "Expert in Software Development and AI.",
     imagePath: "assets/img/atin.jpeg",
   ),
   FacultyMember(
-    name: "Prof. John Doe",
-    department: "Mathematics",
+    name: "Suchi Panday",
+    department: "AI&ML",
     description: "Specializes in Algebra and Geometry.",
     imagePath: "assets/img/atin.jpeg",
   ),
