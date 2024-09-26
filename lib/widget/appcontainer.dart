@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class MyContainer extends StatelessWidget {
-  const MyContainer({super.key, required this.name, required this.image, required this.onPressed});
+  const MyContainer(
+      {super.key,
+      required this.name,
+      required this.image,
+      required this.onPressed});
   final String name;
- final String image;
-final void Function() onPressed;
+  final String image;
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +31,15 @@ final void Function() onPressed;
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                  height: 70,
-                  child: CircleAvatar(
-                      radius: 60,
-                     // child: Icon(Icons.book),
-                      child: Image(
-                          fit: BoxFit.contain,
-                          image: AssetImage("assets/logo/$image.png"))
-                          )
-                          ),
+              CircleAvatar(
+                 // backgroundColor: Colors.purple,
+                  radius: 40,
+                  // child: Icon(Icons.book),
+                  child: Center(
+                    child: Image(
+                        fit: BoxFit.contain,
+                        image: AssetImage("assets/logo/$image.png",)),
+                  )),
               SizedBox(height: 20),
               Text(
                 name,

@@ -22,8 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(   
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          //  bodyText1: TextStyle(color: Colors.black, fontSize: 16),
-          // headline6: TextStyle(color: Colors.blue, fontSize: 20),
+         
         useMaterial3: true,
       ),
       home:   SplashScr(),

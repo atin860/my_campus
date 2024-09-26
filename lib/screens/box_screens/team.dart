@@ -8,23 +8,27 @@ class TeamMembersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Meet Our Team",style: kLabelTextStyle,),
+        title: const Text(
+          "Meet Our Team",
+          style: kLabelTextStyle,
+        ),
         backgroundColor: Colors.blueAccent,
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blueAccent, const Color.fromARGB(255, 255, 137, 64)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+            // gradient: LinearGradient(
+            //   colors: [Colors.blueAccent, const Color.fromARGB(255, 255, 137, 64)],
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter,
+            // ),
+            color: Colors.teal),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView.builder(
             itemCount: teamMembers.length,
             itemBuilder: (context, index) {
-              return TeamMemberCard(member: teamMembers[index], context: context);
+              return TeamMemberCard(
+                  member: teamMembers[index], context: context);
             },
           ),
         ),
@@ -37,7 +41,8 @@ class TeamMemberCard extends StatelessWidget {
   final TeamMember member;
   final BuildContext context;
 
-  const TeamMemberCard({Key? key, required this.member, required this.context}) : super(key: key);
+  const TeamMemberCard({Key? key, required this.member, required this.context})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +106,10 @@ class TeamMemberCard extends StatelessWidget {
           padding: const EdgeInsets.all(30),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [const Color.fromARGB(255, 199, 68, 255).withOpacity(0.8), const Color.fromARGB(255, 165, 197, 212).withOpacity(0.8)],
+              colors: [
+                const Color.fromARGB(255, 199, 68, 255).withOpacity(0.8),
+                const Color.fromARGB(255, 165, 197, 212).withOpacity(0.8)
+              ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -170,25 +178,21 @@ final List<TeamMember> teamMembers = [
     name: "Atin Sharma",
     title: "Lead Developer",
     description: "Passionate about building impactful apps.",
-    imagePath: "assets/img/atin.jpeg",
+    imagePath: "assets/img/profile.jpeg",
   ),
-  TeamMember(
-    name: "Ravi Shankar Gupta",
-    title: "UI/UX Designer",
-    description: "Loves creating user-friendly designs.",
-    imagePath: "assets/img/atin.jpeg",
-  ),
+
   TeamMember(
     name: "Nitish Gupta",
     title: "Project Manager",
     description: "Ensures projects are delivered on time.",
-    imagePath: "assets/img/atin.jpeg",
+    imagePath: "assets/img/profile.jpeg",
   ),
   TeamMember(
-    name: "Bob Brown",
-    title: "Quality Analyst",
-    description: "Dedicated to delivering high-quality software.",
-    imagePath: "assets/img/atin.jpeg",
+    name: "Ravi Shankar Gupta",
+    title: "UI/UX Designer",
+    description: "Loves creprofileg user-friendly designs.",
+    imagePath: "assets/img/profile.jpeg",
   ),
+
   // Add more team members as needed
 ];

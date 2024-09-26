@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/constant.dart';
 
 class PrivacySettingsScreen extends StatefulWidget {
   const PrivacySettingsScreen({super.key});
@@ -18,7 +19,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Privacy Settings"),
+        title: const Text("Privacy Settings",style: kLabelTextStyle,),
         backgroundColor: Colors.blueAccent,
       ),
       body: Container(

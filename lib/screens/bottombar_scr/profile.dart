@@ -87,7 +87,7 @@ class ProfileScreen extends StatelessWidget {
             title: "Personal Info",
             subtitle: "View and update your personal details",
             onTap: () {
-        Get.to(()=> PersonalInfoScreen());
+              Get.to(() => PersonalInfoScreen());
             },
           ),
           _buildProfileCard(
@@ -96,7 +96,7 @@ class ProfileScreen extends StatelessWidget {
             subtitle: "Manage your account privacy",
             onTap: () {
               // Navigate to Privacy Settings
-               Get.to(()=> PrivacySettingsScreen());
+              Get.to(() => PrivacySettingsScreen());
             },
           ),
           _buildProfileCard(
@@ -105,9 +105,9 @@ class ProfileScreen extends StatelessWidget {
             subtitle: "Manage your notification preferences",
             onTap: () {
               // Navigate to Notifications
-             
- 
-  Get.to(()=> NotificationsScreen());           },
+
+              Get.to(() => NotificationsScreen());
+            },
           ),
           _buildProfileCard(
             icon: Icons.help,
@@ -115,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
             subtitle: "Get help and find answers",
             onTap: () {
               // Navigate to Help & Support
-               Get.to(()=> HelpSupportScreen());    
+              Get.to(() => HelpSupportScreen());
             },
           ),
           const SizedBox(height: 30),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelpSupportScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class HelpSupportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Help & Support'),
+        title: const Text('Help & Support',style: kLabelTextStyle,),
         backgroundColor: Colors.blueAccent,
       ),
       body: Padding(

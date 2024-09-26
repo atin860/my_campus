@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:my_campus/Controller/controller.dart';
+import 'package:my_campus/screens/bottombar_scr/profile%20ui/per_info.dart';
+import 'package:my_campus/screens/bottombar_scr/profile%20ui/privacy_seq.dart';
 import 'package:my_campus/screens/bottombar_scr/sub_attendence.dart';
 import 'package:my_campus/screens/bottombar_scr/profile.dart';
 import 'package:my_campus/screens/box_screens/attendence.dart';
@@ -189,7 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
-                // Navigate to Profile screen
+        Get.to(()=> PersonalInfoScreen());
+          
               },
             ),
             ListTile(
@@ -207,6 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('Settings'),
               onTap: () {
                 // Navigate to Settings screen
+                  Get.to(()=> PrivacySettingsScreen());
               },
             ),
             ListTile(
@@ -284,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             MyContainer(
               name: 'Attendance',
-              image: 'erp',
+              image: 'attendence',
               onPressed: () {
                 Get.to(() => const DailyAttendanceScreen());
               },
