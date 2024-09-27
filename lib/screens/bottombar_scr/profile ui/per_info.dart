@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/service/firebase_database.dart';
 import 'package:my_campus/widget/constant.dart';
 
-class PersonalInfoScreen extends StatelessWidget {
-  const PersonalInfoScreen({super.key});
+class PerInfo extends StatefulWidget {
+  const PerInfo({super.key});
+
+  @override
+  State<PerInfo> createState() => _PerInfoState();
+}
+
+class _PerInfoState extends State<PerInfo> {
+  TextEditingController name = TextEditingController();
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUser();
+  }
+
+  void getUser() async {
+    Map data = await FireStoreService.getUser();
+    if (data.isNotEmpty) {
+      setState(() {
+        name.text = data['Name'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text("Personal Info",style: kLabelTextStyle,),
+        title: Text(
+          "Personal Info",
+          style: kLabelTextStyle,
+        ),
         backgroundColor: Colors.blueAccent,
       ),
       body: Container(
@@ -21,7 +47,6 @@ class PersonalInfoScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-         
             _buildProfileHeader(context),
             const SizedBox(height: 10),
             _buildPersonalInfoList(context),
@@ -39,7 +64,8 @@ class PersonalInfoScreen extends StatelessWidget {
         children: [
           const CircleAvatar(
             radius: 70,
-            backgroundImage: AssetImage('assets/img/profile.jpeg'), // Replace with your profile image
+            backgroundImage: AssetImage(
+                'assets/img/profile.jpeg'), // Replace with your profile image
           ),
           const SizedBox(height: 15),
           const Text(
@@ -73,9 +99,12 @@ class PersonalInfoScreen extends StatelessWidget {
           _buildInfoCard(Icons.phone, "Phone", "+91 7905539159"),
           _buildInfoCard(Icons.home, "Address", "Hardoi, India"),
           _buildInfoCard(Icons.calendar_today, "Date of Birth", "28 Oct 2003"),
-          _buildInfoCard(Icons.school, "Education", "B.Tech in Computer Science"),
-          _buildInfoCard(Icons.work, "Experience", "3 Years at vSafe Software Company"),
-          _buildInfoCard(Icons.person, "About Me", "A passionate software developer."),
+          _buildInfoCard(
+              Icons.school, "Education", "B.Tech in Computer Science"),
+          _buildInfoCard(
+              Icons.work, "Experience", "3 Years at vSafe Software Company"),
+          _buildInfoCard(
+              Icons.person, "About Me", "A passionate software developer."),
         ],
       ),
     );

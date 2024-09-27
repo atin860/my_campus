@@ -18,10 +18,10 @@ class MyContainer extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          height: screenHeight * 0.19,
+          height: screenHeight * 0.18,
           width: screenWidth * 0.18,
-          padding: EdgeInsets.all(15),
-          margin: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(15),
+          margin: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(boxShadow: const [
             BoxShadow(
                 color: Color.fromRGBO(94, 171, 239, 0.842),
@@ -33,14 +33,14 @@ class MyContainer extends StatelessWidget {
             children: [
               CircleAvatar(
                  // backgroundColor: Colors.purple,
-                  radius: 40,
+                  radius: 30,
                   // child: Icon(Icons.book),
                   child: Center(
                     child: Image(
                         fit: BoxFit.contain,
                         image: AssetImage("assets/logo/$image.png",)),
                   )),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
               Text(
                 name,
                 style: kcontainerTextStyle,

@@ -5,8 +5,17 @@ import 'package:my_campus/screens/bottombar_scr/profile%20ui/notification.dart';
 import 'package:my_campus/screens/bottombar_scr/profile%20ui/per_info.dart';
 import 'package:my_campus/screens/bottombar_scr/profile%20ui/privacy_seq.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  // You can define any state variables here if needed.
+  String userName = "Atin Sharma";
+  String userEmail = "atin.vSafe.com";
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +52,24 @@ class ProfileScreen extends StatelessWidget {
   // Profile Header with Avatar, Name, and Email
   Widget _buildProfileHeader() {
     return Column(
-      children: const [
-        CircleAvatar(
+      children: [
+        const CircleAvatar(
           radius: 70,
           backgroundImage: AssetImage('assets/img/atin.jpeg'), // Add your image
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
-          "Atin Sharma",
-          style: TextStyle(
+          userName,
+          style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text(
-          "atin.vSafe.com",
-          style: TextStyle(
+          userEmail,
+          style: const TextStyle(
             fontSize: 16,
             color: Colors.white70,
           ),
@@ -87,7 +96,7 @@ class ProfileScreen extends StatelessWidget {
             title: "Personal Info",
             subtitle: "View and update your personal details",
             onTap: () {
-              Get.to(() => PersonalInfoScreen());
+              Get.to(() => PerInfo());
             },
           ),
           _buildProfileCard(
@@ -105,7 +114,6 @@ class ProfileScreen extends StatelessWidget {
             subtitle: "Manage your notification preferences",
             onTap: () {
               // Navigate to Notifications
-
               Get.to(() => NotificationsScreen());
             },
           ),

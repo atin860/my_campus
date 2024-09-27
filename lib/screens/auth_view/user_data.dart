@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/service/firebase_database.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/textfield.dart';
@@ -20,6 +21,7 @@ class _UserDataScrState extends State<UserDataScr> {
   TextEditingController year = TextEditingController();
   TextEditingController branch = TextEditingController();
   TextEditingController number = TextEditingController();
+  TextEditingController parents = TextEditingController();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   // Method to update a user
   Future<void> updateUser(String documentId, Map<String, dynamic> data) {
@@ -63,19 +65,27 @@ class _UserDataScrState extends State<UserDataScr> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(width: 200, child: Image.asset("assets/img/ai.png")),
+                  // SizedBox(width: 200, child: Image.asset("assets/img/ai.png")),
+                  const SizedBox(
+                    height: 50,
+                  ),
                   MyTextField(
                       controller: name, label: 'Name', hintText: "Atin Sharma"),
                   MyTextField(
                       controller: rollNo,
                       label: 'Roll Number',
                       hintText: "2204221520010"),
-                  MyTextField(controller: year, label: 'Year', hintText: "3rd"),
                   MyTextField(
                       controller: branch, label: 'Branch', hintText: "CSE(AI)"),
+                  MyTextField(controller: year, label: 'Year', hintText: "3rd"),
+
                   MyTextField(
                       controller: number,
                       label: 'Mobile Number',
+                      hintText: "7905539159"),
+                  MyTextField(
+                      controller: parents,
+                      label: 'Parents Number',
                       hintText: "7905539159"),
                   const SizedBox(
                     height: 10,
@@ -105,22 +115,24 @@ class _UserDataScrState extends State<UserDataScr> {
   }
 
   void addUser() async {
-    log("entee");
     FocusManager.instance.primaryFocus!.unfocus();
-    Map<String, dynamic> data = {
-      "userName": name.text,
-      "Roll NO": rollNo.text,
-      // "age": int.parse(ageController.text.trim()),
-      "year": year,
-      "Branch": branch,
-      "Number": branch,
+
+    Map<String, dynamic> users = {
+      "Name": name.text,
+      "Roll No.": rollNo.text,
+      "Year": year.text,
+      "Branch": branch.text,
+      "Number": number.text,
+      "ParentsNo": parents.text,
+      "userId": auth.currentUser!.uid,
     };
     log("befor adding user:");
-    FireStoreService.instance.collection('Users').add(data);
-    log("add");
-    if (data == null) {
+
+    Map? res = await FireStoreService.addUser(users);
+    if (res == null) {
       log("after addig error addd ni hua");
     }
+
     log("after adding:" + addUser.toString());
     successMessage("Successfully Updated,");
     setState(() {
@@ -129,7 +141,8 @@ class _UserDataScrState extends State<UserDataScr> {
       year.clear();
       branch.clear();
       number.clear();
+      parents.clear();
     });
-    log('data: $data');
+    log('data: $users');
   }
 }
