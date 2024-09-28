@@ -50,6 +50,36 @@ class _QuizScreenState extends State<QuizScreen> {
       options: ['O(1)', 'O(n)', 'O(log n)', 'O(n²)'],
       answer: 'O(n)',
     ),
+    Question(
+      questionText: 'Which command is commonly used to list files in Unix/Linux?',
+      options: ['list', 'dir', 'ls', ' show'],
+      answer: 'ls',
+    ),
+    Question(
+      questionText: 'What is a daemon in an operating system?',
+      options: ['l A malicious software', 'A background process that handles requests',  'A type of user account', '  A graphical interface'],
+      answer: 'A background process that handles requests',
+    ),
+    Question(
+      questionText: 'What does "booting" mean?',
+      options: [' Installing a new application', ' Starting the computer and loading the operating system',  'Shutting down the computer', '   Running a diagnostic test'],
+      answer: ' Starting the computer and loading the operating system',
+    ),
+    Question(
+      questionText: 'What is the role of a device driver?',
+      options: ['To manage user accounts', ' To communicate with hardware devices',  ' To optimize CPU performance', '   To store system files'],
+      answer: '  To communicate with hardware devices',
+    ),
+    Question(
+      questionText: 'What does "paging" refer to in memory management?',
+      options: ['Organizing files', 'Managing virtual memory by breaking it into fixed-size pages',  ' Compressing data', ' Scheduling tasks'],
+      answer: 'Managing virtual memory by breaking it into fixed-size pages',
+    ),
+    Question(
+      questionText: 'What is the primary purpose of a kernel in an operating system?',
+      options: ['To provide a user interface', 'To manage hardware resources',  ' To execute application software', ' To handle network communications'],
+      answer: 'To manage hardware resources',
+    ),
     // Add more questions here
   ];
 

@@ -19,7 +19,7 @@ class MyContainer extends StatelessWidget {
       onTap: onPressed,
       child: Container(
           height: screenHeight * 0.19,
-          width: screenWidth * 0.18,
+          width: screenWidth * 0.19,
           padding: EdgeInsets.all(15),
           margin: EdgeInsets.all(8.0),
           decoration: BoxDecoration(boxShadow: const [
