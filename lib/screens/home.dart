@@ -191,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
-        Get.to(()=> PersonalInfoScreen());
+        Get.to(()=> PerInfo());
           
               },
             ),
@@ -244,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
               name: 'Notes',
               image: 'notes',
               onPressed: () {
-                Get.to(() => NotesScreen());
+                // Get.to(() => NotesScreen());
               },
             ),
           ],

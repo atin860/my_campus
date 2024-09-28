@@ -1,11 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 
 class QuizScreen extends StatefulWidget {
+  const QuizScreen({super.key});
+
   @override
-  _QuizScreenState createState() => _QuizScreenState();
+  State<QuizScreen> createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("data"),),
+      body: Column(children: [
+ElevatedButton(onPressed: (){
+  Get.to(()=>OperatingSystem());
+}, child: Text("OS"))
+
+      ],),
+    );
+  }
+}
+
+
+
+
+
+// operating system class 
+class OperatingSystem extends StatefulWidget {
+  @override
+  _OperatingSystemState createState() => _OperatingSystemState();
+}
+class _OperatingSystemState extends State<OperatingSystem> {
   final List<Question> _questions = [
     Question(
       questionText: 'What is the main purpose of an operating system?',
@@ -17,6 +45,7 @@ class _QuizScreenState extends State<QuizScreen> {
       options: ['Earth', 'Jupiter', 'Mars', 'Saturn'],
       answer: 'Jupiter',
     ),
+
     Question(
       questionText: 'What is virtual memory?',
       options: ['A memory management technique that gives an application the impression it has contiguous working memory', 
@@ -217,7 +246,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   ? () => _checkAnswer(index)
                   : null, // Disable if already answered
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 5), // Added margin
+                margin: EdgeInsets.symmetric(vertical: 8), // Added margin
                 decoration: BoxDecoration(
                   color: optionColor,
                   borderRadius: BorderRadius.circular(10),

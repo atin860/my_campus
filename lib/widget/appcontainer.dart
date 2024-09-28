@@ -33,14 +33,14 @@ class MyContainer extends StatelessWidget {
             children: [
               CircleAvatar(
                  // backgroundColor: Colors.purple,
-                  radius: 40,
+                  radius: 30,
                   // child: Icon(Icons.book),
                   child: Center(
                     child: Image(
                         fit: BoxFit.contain,
                         image: AssetImage("assets/logo/$image.png",)),
                   )),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
               Text(
                 name,
                 style: kcontainerTextStyle,
