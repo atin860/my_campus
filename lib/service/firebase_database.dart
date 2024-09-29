@@ -1,49 +1,53 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_campus/Controller/controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_campus/widget/toast_msg.dart';
 
 class FireStoreService {
-  static FirebaseFirestore instance = FirebaseFirestore.instance;
-  // static CollectionReference tasks = instance.collection('tasks');
-  static CollectionReference users = instance.collection('users');
+  static final FirebaseFirestore _instance = FirebaseFirestore.instance;
+  static final CollectionReference users = _instance.collection('users');
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static Future<Map?> addUser(Map<String, dynamic> data) async {
     try {
-      return users.doc(auth.currentUser?.uid).set(data).then((value) => data);
+      await users.doc(_auth.currentUser?.uid).set(data);
+      return data;
     } catch (e) {
-      showToastMessage("error:$e");
-      print("add user error : $e");
-
+      showToastMessage("error: $e");
+      print("add user error: $e");
       return null;
     }
   }
 
   static Future<Map?> updateUser(Map<String, dynamic> data) async {
     try {
-      return users
-          .doc(auth.currentUser?.uid)
-          .update(data)
-          .then((value) => data);
+      await users.doc(_auth.currentUser?.uid).update(data);
+      return data;
     } catch (e) {
-      showToastMessage("error:$e");
-      print("add user error : $e");
-
+      showToastMessage("error: $e");
+      print("update user error: $e");
       return null;
     }
   }
 
   static Future<Map> getUser() async {
     try {
-      return users
-          .doc(auth.currentUser?.uid)
-          .get()
-          .then((value) => value.exists ? value.data() as Map : {});
+      DocumentSnapshot value = await users.doc(_auth.currentUser?.uid).get();
+      return value.exists ? value.data() as Map : {};
     } catch (e) {
-      showToastMessage("error:$e");
-      print("get task error : $e");
-
+      showToastMessage("error: $e");
+      print("get user error: $e");
       return {};
     }
+  }
+
+  // Get the currently signed-in user
+  User? getCurrentUser() {
+    return _auth.currentUser;
+  }
+
+  // Get the email of the currently signed-in user
+  String? getCurrentUserEmail() {
+    User? user = getCurrentUser();
+    return user?.email; // Returns null if no user is signed in
   }
 }

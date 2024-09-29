@@ -5,8 +5,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/screens/bottombar_scr/profile%20ui/per_info.dart';
 import 'package:my_campus/screens/bottombar_scr/profile%20ui/privacy_seq.dart';
-import 'package:my_campus/screens/bottombar_scr/sub_attendence.dart';
 import 'package:my_campus/screens/bottombar_scr/profile.dart';
+import 'package:my_campus/screens/box_screens/assignment.dart';
 import 'package:my_campus/screens/box_screens/attendence.dart';
 import 'package:my_campus/screens/box_screens/event.dart';
 import 'package:my_campus/screens/box_screens/faculty.dart';
@@ -14,6 +14,7 @@ import 'package:my_campus/screens/box_screens/id_card.dart';
 import 'package:my_campus/screens/box_screens/notes_scr.dart';
 import 'package:my_campus/screens/box_screens/quiz.dart';
 import 'package:my_campus/screens/box_screens/team.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/appcontainer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -30,9 +31,9 @@ class _HomeScrState extends State<HomeScr> {
   // bottom bar
   int _selectedIndex = 0;
   static final List<Widget> _screens = <Widget>[
-    HomeScreen(),
-    AttendanceSearchScreen(),
-    ProfileScreen(),
+    const HomeScreen(),
+    // AttendanceSearchScreen(),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -44,11 +45,12 @@ class _HomeScrState extends State<HomeScr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kScaffoldColor,
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.done), label: 'Attendence'),
+          // BottomNavigationBarItem(icon: Icon(Icons.done), label: 'Attendence'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         currentIndex: _selectedIndex,
@@ -58,6 +60,7 @@ class _HomeScrState extends State<HomeScr> {
     );
   }
 }
+
 
 //home screen class,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 class HomeScreen extends StatefulWidget {
@@ -119,17 +122,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // Function to handle bottom navigation item tap
-  void _onItemTapped(int index) {
-    setState(() {
-    });
-  }
 
   final List<String> imgList = [
     // 'assets/img/back1.jpg',
     'assets/img/back2.jpg',
     'assets/img/back7.JPG',
     'assets/img/back4.JPG',
-    'assets/img/back5.jpg',
+    // 'assets/img/back5.jpg',
     'assets/img/back6.JPG',
     'assets/img/back3.jpg',
     // Add more images here
@@ -138,10 +137,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kBackgroundColors,
-        title: const Text("HELLO ATIN!", style: kLabelTextStyle),
-      ),
+      backgroundColor: kScaffoldColor,
+      appBar: const MyAppBar(
+        automaticallyImplyLeading: true,
+        title: "Hello Atin!"),
       drawer: _buildCustomDrawer(),
       body: ListView(
         children: [
@@ -164,23 +163,30 @@ class _HomeScreenState extends State<HomeScreen> {
   Drawer _buildCustomDrawer() {
     return Drawer(
       width: 270,
-      backgroundColor: const Color.fromARGB(255, 134, 189, 255),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 50, left: 10, right: 10),
-        child: Column(
-          children: [
-            const CircleAvatar(
-              radius: 70,
-              backgroundImage:
-                  AssetImage('assets/img/atin.jpeg'), // Example profile image
-            ),
-            const SizedBox(height: 20),
-            const Text('Atin Sharma',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const Text('atin.vSafe.com',
-                style: TextStyle(color: Colors.black54)),
-            const SizedBox(height: 20),
-            ListTile(
+      
+    
+      child: Column(
+        children: [
+          Container(
+            height: 300,
+            width: double.infinity,
+            padding: const EdgeInsets.only(top: 50),
+            decoration: const BoxDecoration(color: kappbarback,borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))),
+            child: const Column(children: [CircleAvatar(
+              
+            radius: 70,
+            backgroundImage:
+                AssetImage('assets/img/atin.jpeg'), // Example profile image
+          ),
+          SizedBox(height: 20),
+          Text('Atin Sharma',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text('atin.vSafe.com',
+              style: TextStyle(color: Colors.black54)),],),),
+          const SizedBox(height: 20),
+         Padding(
+           padding: const EdgeInsets.all(8.0),
+           child: Column(children: [ ListTile(
               leading: const Icon(Icons.home),
               title: const Text('Home'),
               onTap: () {
@@ -191,8 +197,8 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
-        Get.to(()=> PerInfo());
-          
+                 Get.to(()=> const PerInfo());
+                   
               },
             ),
             ListTile(
@@ -210,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('Settings'),
               onTap: () {
                 // Navigate to Settings screen
-                  Get.to(()=> PrivacySettingsScreen());
+                  Get.to(()=> const PrivacySettingsScreen());
               },
             ),
             ListTile(
@@ -219,9 +225,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 controller.logout();
               },
-            ),
-          ],
-        ),
+            ),],),
+         )
+        ],
       ),
     );
   }
@@ -244,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
               name: 'Notes',
               image: 'notes',
               onPressed: () {
-                // Get.to(() => NotesScreen());
+                Get.to(() => NotesScreen());
               },
             ),
           ],
@@ -261,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
               name: 'Quiz',
               image: 'quiz',
               onPressed: () {
-                Get.to(() => QuizScreen());
+                Get.to(() => const QuizScreen());
               },
             ),
           ],
@@ -273,13 +279,13 @@ class _HomeScreenState extends State<HomeScreen> {
               name: 'Event',
               image: 'events',
               onPressed: () {
-                Get.to(()=>EventScreen());
+                Get.to(()=>const EventScreen());
               },
             ),
             MyContainer(
               name: 'Assignment',
               image: 'assignment',
-              onPressed: () {},
+              onPressed: () {  Get.to(()=>const AsignmentScr());},
             ),
           ],
         ),
@@ -297,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
               name: 'ID Card',
               image: 'IdCard',
               onPressed: () {
-                Get.to(() => IdCardScreen(
+                Get.to(() => const IdCardScreen(
                       name: "Atin Sharma",
                       rollNumber: "2204221520010",
                       department: "CSE(AI)",

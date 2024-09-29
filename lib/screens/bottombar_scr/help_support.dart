@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,24 +18,21 @@ class HelpSupportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Help & Support',style: kLabelTextStyle,),
-        backgroundColor: Colors.blueAccent,
-      ),
+      appBar: MyAppBar(title: "Help & Support"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Help Section
-            const Text(
-              "Help & Support",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
+            // const Text(
+            //   "Help & Support",
+            //   style: TextStyle(
+            //     fontSize: 24,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
+            // const SizedBox(height: 20),
             // FAQ Button
             ListTile(
               leading: const Icon(Icons.help_outline, color: Colors.blueAccent),
@@ -81,8 +79,8 @@ class HelpSupportScreen extends StatelessWidget {
                 onPressed: () {
                   _launchURL("https://www.example.com/help"); // Example help center URL
                 },
-                icon: const Icon(Icons.public),
-                label: const Text("Visit Our Help Center"),
+                icon: const Icon(Icons.public,color: Colors.white,),
+                label: const Text("Visit Our Help Center",style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

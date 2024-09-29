@@ -7,26 +7,19 @@ class FacultyListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kScaffoldColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Meet Our Faculty",style: kLabelTextStyle,),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: kappbarback,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blueAccent, const Color.fromARGB(255, 221, 206, 161)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-            itemCount: facultyMembers.length,
-            itemBuilder: (context, index) {
-              return FacultyMemberCard(member: facultyMembers[index], context: context);
-            },
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView.builder(
+          itemCount: facultyMembers.length,
+          itemBuilder: (context, index) {
+            return FacultyMemberCard(member: facultyMembers[index], context: context);
+          },
         ),
       ),
     );
@@ -99,11 +92,7 @@ class FacultyMemberCard extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blueAccent.withOpacity(0.8), Colors.lightBlueAccent.withOpacity(0.8)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            gradient: kgradient,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Column(
@@ -169,7 +158,7 @@ final List<FacultyMember> facultyMembers = [
     name: "Dr. Sameer Awasthi",
     department: "Head Of Dipartment",
     description: "Expert in Software Development and AI.",
-    imagePath: "assets/img/atin.jpeg",
+    imagePath: "assets/img/back1.jpg",
   ),
   FacultyMember(
     name: "Suchi Panday",

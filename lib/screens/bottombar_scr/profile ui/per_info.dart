@@ -1,5 +1,13 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:my_campus/main.dart';
+import 'package:my_campus/screens/auth_view/user_data.dart';
 import 'package:my_campus/service/firebase_database.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class PerInfo extends StatefulWidget {
@@ -10,8 +18,8 @@ class PerInfo extends StatefulWidget {
 }
 
 class _PerInfoState extends State<PerInfo> {
-  TextEditingController name = TextEditingController();
-
+  final FireStoreService fireStoreService = FireStoreService();
+Map user={};
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -19,39 +27,36 @@ class _PerInfoState extends State<PerInfo> {
   }
 
   void getUser() async {
+    log("chalo");
     Map data = await FireStoreService.getUser();
-    if (data.isNotEmpty) {
-      setState(() {
-        name.text = data['Name'];
-      });
-    }
+       log("data $data");
+       if (mounted) {
+  setState(() {
+    // Your state update logic here
+    user=data;
+  });
+}
+
   }
 
   @override
   Widget build(BuildContext context) {
+      String? email = fireStoreService.getCurrentUserEmail();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Personal Info",
-          style: kLabelTextStyle,
-        ),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blueAccent, Color.fromARGB(255, 114, 178, 207)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Column(
-          children: [
-            _buildProfileHeader(context),
-            const SizedBox(height: 10),
-            _buildPersonalInfoList(context),
-          ],
-        ),
+      backgroundColor: kScaffoldColor,
+      appBar: MyAppBar(title: "User Info",titleAlignment: TextAlign.center,)
+,      body:
+       Column(
+         children: [
+           _buildProfileHeader(context),
+           const SizedBox(height: 10),
+           _buildPersonalInfoList(context),
+         ],
+       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: FloatingActionButton(onPressed: (){ Get.to(()=>UserDataScr());}
+       , backgroundColor: Colors.red,child: Icon(Icons.edit,color: Colors.white,),),
       ),
     );
   }
@@ -68,8 +73,8 @@ class _PerInfoState extends State<PerInfo> {
                 'assets/img/profile.jpeg'), // Replace with your profile image
           ),
           const SizedBox(height: 15),
-          const Text(
-            'Atin Sharma',
+           Text(
+      user['Name']??"",
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -77,11 +82,11 @@ class _PerInfoState extends State<PerInfo> {
             ),
           ),
           const SizedBox(height: 5),
-          const Text(
-            'Software Engineer',
-            style: TextStyle(
+          Text(
+           user['Year']??"",
+            style: const TextStyle(
               fontSize: 16,
-              color: Colors.white70,
+              color: Color.fromARGB(255, 0, 0, 0),
             ),
           ),
         ],
@@ -95,16 +100,20 @@ class _PerInfoState extends State<PerInfo> {
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
-          _buildInfoCard(Icons.email, "Email", "atin86055@gmail.com"),
+                    _buildInfoCard(Icons.insert_drive_file, "Roll_NO.", "+91 7905539159"),
+          _buildInfoCard(Icons.class_outlined, "Branch", "+91 7905539159"),
+          _buildInfoCard(Icons.calendar_month, "Year", "+91 7905539159"),
+ 
+       
+         
           _buildInfoCard(Icons.phone, "Phone", "+91 7905539159"),
           _buildInfoCard(Icons.home, "Address", "Hardoi, India"),
           _buildInfoCard(Icons.calendar_today, "Date of Birth", "28 Oct 2003"),
-          _buildInfoCard(
-              Icons.school, "Education", "B.Tech in Computer Science"),
-          _buildInfoCard(
-              Icons.work, "Experience", "3 Years at vSafe Software Company"),
-          _buildInfoCard(
-              Icons.person, "About Me", "A passionate software developer."),
+           _buildInfoCard(Icons.email, "Email", "${fireStoreService.getCurrentUserEmail()}"),
+          // _buildInfoCard(
+          //     Icons.school, "Education", "B.Tech in Computer Science"),
+        
+        
         ],
       ),
     );
@@ -122,11 +131,8 @@ class _PerInfoState extends State<PerInfo> {
           title,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(
-          data,
-          style: const TextStyle(fontSize: 15, color: Colors.black54),
-        ),
-      ),
+        subtitle:fireStoreService.getCurrentUserEmail()!.isNotEmpty?Text(data):Center(child: CircularProgressIndicator())
+      )
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/constant.dart';
 
 class DailyAttendanceScreen extends StatelessWidget {
   const DailyAttendanceScreen({Key? key}) : super(key: key);
@@ -6,27 +7,25 @@ class DailyAttendanceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kScaffoldColor,
       appBar: AppBar(
         title: const Text("Daily Attendance"),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: kappbarback
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blueAccent, Colors.lightBlueAccent],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView.builder(
+          itemCount: studentAttendance.length,
+          itemBuilder: (context, index) {
+            return AttendanceCard(student: studentAttendance[index], context: context);
+          },
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-            itemCount: studentAttendance.length,
-            itemBuilder: (context, index) {
-              return AttendanceCard(student: studentAttendance[index], context: context);
-            },
-          ),
-        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FloatingActionButton(
+          backgroundColor: Colors.blue,
+          onPressed: (){},child: Icon(Icons.play_arrow,size: 40,color: Colors.white,),),
       ),
     );
   }

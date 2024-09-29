@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class IdCardScreen extends StatelessWidget {
@@ -18,10 +19,7 @@ class IdCardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("College ID Card"),
-        backgroundColor: Colors.blueAccent,
-      ),
+      // appBar:MyAppBar(title: "My Id Card"),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -35,11 +33,7 @@ class IdCardScreen extends StatelessWidget {
               height: 200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                gradient: LinearGradient(
-                  colors: [Colors.blueAccent, const Color.fromARGB(255, 255, 118, 64)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+         color: Colors.blue
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),

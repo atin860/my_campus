@@ -23,21 +23,22 @@ class MyContainer extends StatelessWidget {
           padding: EdgeInsets.all(15),
           margin: EdgeInsets.all(8.0),
           decoration: BoxDecoration(boxShadow: const [
-            BoxShadow(
-                color: Color.fromRGBO(94, 171, 239, 0.842),
-                blurRadius: 30.0,
-                offset: Offset(0, 10))
+            // BoxShadow(
+            //     color: Color.fromRGBO(255, 72, 0, 0.858),
+            //     blurRadius: 30.0,
+            //     offset: Offset(0, 10))
           ], color: Colors.white, borderRadius: BorderRadius.circular(15)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
                  // backgroundColor: Colors.purple,
+                 backgroundColor: Colors.white,
                   radius: 30,
                   // child: Icon(Icons.book),
                   child: Center(
                     child: Image(
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                         image: AssetImage("assets/logo/$image.png",)),
                   )),
               const SizedBox(height: 10),

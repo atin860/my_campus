@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class PrivacySettingsScreen extends StatefulWidget {
@@ -17,27 +18,15 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Privacy Settings",style: kLabelTextStyle,),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blueAccent, Colors.lightBlueAccent],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            _buildHeader(context),
-            const SizedBox(height: 20),
-            _buildPrivacySettingsList(context),
-          ],
-        ),
+    return Scaffold(backgroundColor: kScaffoldColor,
+      appBar: MyAppBar(title: "Privacy Setting",titleAlignment: TextAlign.center,),
+      body: Column(
+        children: [
+          const SizedBox(height: 20),
+          _buildHeader(context),
+          const SizedBox(height: 20),
+          _buildPrivacySettingsList(context),
+        ],
       ),
     );
   }

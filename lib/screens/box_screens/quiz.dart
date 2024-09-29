@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:my_campus/widget/app_button.dart';
+import 'package:my_campus/widget/appbar.dart';
+import 'package:my_campus/widget/constant.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -13,13 +17,30 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("data"),),
-      body: Column(children: [
-ElevatedButton(onPressed: (){
-  Get.to(()=>OperatingSystem());
-}, child: Text("OS"))
+      backgroundColor: kScaffoldColor,
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   title: Text("Quiz",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold ,),), backgroundColor: kappbarback),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
 
-      ],),
+Image(image: AssetImage("assets/logo/quiz.png")),
+SizedBox(height: 20,),
+Container(
+  padding: EdgeInsets.all(20),
+  margin: EdgeInsets.all(10),
+  decoration: BoxDecoration(borderRadius:BorderRadius.circular(20),color: Colors.white),
+  child: Column(children: [AppButton(hint: "Java", onPressed: (){Get.to(()=>OperatingSystem());}),
+        AppButton(hint: "Data Structure", onPressed: (){Get.to(()=>OperatingSystem());}),
+        
+        AppButton(hint: "Oprating System", onPressed: (){Get.to(()=>OperatingSystem());}),
+           AppButton(hint: "C language", onPressed: (){Get.to(()=>OperatingSystem());}),],),)
+        
+        ],),
+      ),
     );
   }
 }
@@ -160,13 +181,11 @@ class _OperatingSystemState extends State<OperatingSystem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Quiz App'),
-        backgroundColor: const Color.fromARGB(255, 68, 209, 202),
-      ),
+backgroundColor: kScaffoldColor,
+      appBar: MyAppBar(title: "Quiz"),
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.blueGrey,
+          color: kScaffoldColor
         ),
         padding: const EdgeInsets.all(16.0),
         child: _quizCompleted
@@ -196,24 +215,36 @@ class _OperatingSystemState extends State<OperatingSystem> {
                 'Total ${_questions.length}',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold
                 ),
               ),
               Text(
                 'Oprating System',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
+                  color: Colors.black,fontWeight: FontWeight.bold
                 ),
               ),
              
             ],
           ),
-          Divider(),
+          Divider(color: Colors.black,),
           SizedBox(height: 30),
-          Text(
-            'Q.${_currentQuestionIndex + 1} : ${_questions[_currentQuestionIndex].questionText}',
-            style: TextStyle(fontSize: 20, color: Colors.white),
+          Container(padding: EdgeInsets.all(15),
+          width: double.infinity,
+            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Que.${_currentQuestionIndex + 1} :' , style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold),),
+                SizedBox(height: 5,),
+                Text(
+                  '${_questions[_currentQuestionIndex].questionText}',
+                  style: TextStyle(fontSize: 20, color: Colors.black),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -221,13 +252,16 @@ class _OperatingSystemState extends State<OperatingSystem> {
   }
 
   Widget _buildOptions() {
-    return Expanded(
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: List.generate(
           _questions[_currentQuestionIndex].options.length,
           (index) {
             Color optionColor;
-
+      
             if (_answered) {
               if (_questions[_currentQuestionIndex].options[index] ==
                   _questions[_currentQuestionIndex].answer) {
@@ -235,12 +269,12 @@ class _OperatingSystemState extends State<OperatingSystem> {
               } else if (_selectedIndex == index) {
                 optionColor = Colors.red; // Incorrect answer
               } else {
-                optionColor = Colors.blueAccent;
+                optionColor = Colors.blue;
               }
             } else {
-              optionColor = Colors.blueAccent; // Default color when not answered
+              optionColor = Colors.blue; // Default color when not answered
             }
-
+      
             return GestureDetector(
               onTap: !_answered
                   ? () => _checkAnswer(index)

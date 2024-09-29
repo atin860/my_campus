@@ -4,6 +4,7 @@ import 'package:my_campus/screens/bottombar_scr/help_support.dart';
 import 'package:my_campus/screens/bottombar_scr/profile%20ui/notification.dart';
 import 'package:my_campus/screens/bottombar_scr/profile%20ui/per_info.dart';
 import 'package:my_campus/screens/bottombar_scr/profile%20ui/privacy_seq.dart';
+import 'package:my_campus/widget/constant.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart'; // Importing Flutter Material Design package
 import 'package:flutter/services.dart'; // Importing for system services (e.g., setting orientation)
 import 'package:get/get.dart'; // Importing GetX for state management and navigation
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart'; // Importing the YouTube player package
 
@@ -28,15 +29,10 @@ class _EventScreenState extends State<EventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Avinya 2k23', // Title of the AppBar
-          style: kLabelTextStyle, // Custom text style (should be defined elsewhere)
-        ),
-        backgroundColor: Colors.teal, // Background color of the AppBar
-        systemOverlayStyle: SystemUiOverlayStyle.light, // Style for system overlays
-      ),
-      body: ListView( // A scrollable list of widgets
+      backgroundColor: kScaffoldColor,
+      appBar: MyAppBar(
+        
+        title: "Avinya 2k23"), body: ListView( // A scrollable list of widgets
         padding: const EdgeInsets.all(20), // Padding around the ListView
         children: [
           Wrap( // A widget that displays its children in a wrap layout

@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:my_campus/screens/auth_view/login_scr.dart';
-import 'package:my_campus/screens/auth_view/user_data.dart';
 import 'package:my_campus/screens/home.dart';
 
 import 'package:my_campus/widget/loading.dart';

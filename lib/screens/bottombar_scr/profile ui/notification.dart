@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -35,11 +36,9 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
-      appBar: AppBar(
-        title: const Text('Notifications',style: kLabelTextStyle,),
-        backgroundColor: Colors.blueAccent,
-      ),
+      
+      backgroundColor:kScaffoldColor,
+      appBar:MyAppBar(title: "Notifications"),
       body: ListView.builder(
         padding: const EdgeInsets.all(8.0),
         itemCount: notifications.length,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class AttendanceSearchScreen extends StatefulWidget {
@@ -68,11 +69,8 @@ class _AttendanceSearchScreenState extends State<AttendanceSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
-        title: const Text('Attendance Tracker',style: kLabelTextStyle,),
-      ),
+    return Scaffold(backgroundColor: kScaffoldColor,
+      appBar: MyAppBar(title: "Subject Wise Attendence",titleAlignment: TextAlign.center,),
       body: Column(
         children: [
           _buildSearchBar(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class TeamMembersScreen extends StatelessWidget {
@@ -7,30 +8,16 @@ class TeamMembersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Meet Our Team",
-          style: kLabelTextStyle,
-        ),
-        backgroundColor: Colors.blueAccent,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-            // gradient: LinearGradient(
-            //   colors: [Colors.blueAccent, const Color.fromARGB(255, 255, 137, 64)],
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            // ),
-            color: Colors.teal),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-            itemCount: teamMembers.length,
-            itemBuilder: (context, index) {
-              return TeamMemberCard(
-                  member: teamMembers[index], context: context);
-            },
-          ),
+      backgroundColor: kScaffoldColor,
+      appBar: MyAppBar(title: "Meet Our Team"),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView.builder(
+          itemCount: teamMembers.length,
+          itemBuilder: (context, index) {
+            return TeamMemberCard(
+                member: teamMembers[index], context: context);
+          },
         ),
       ),
     );
@@ -63,7 +50,7 @@ class TeamMemberCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
                   member.imagePath,
-                  height: 80,
+                  height: 100,
                   width: 80,
                   fit: BoxFit.cover,
                 ),
@@ -105,14 +92,7 @@ class TeamMemberCard extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(30),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color.fromARGB(255, 199, 68, 255).withOpacity(0.8),
-                const Color.fromARGB(255, 165, 197, 212).withOpacity(0.8)
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+            gradient: kgradient,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           child: Column(
@@ -145,7 +125,7 @@ class TeamMemberCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
                   member.imagePath,
-                  height: 150,
+                  height: 150,width: 150,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -183,13 +163,13 @@ final List<TeamMember> teamMembers = [
 
   TeamMember(
     name: "Nitish Gupta",
-    title: "Project Manager",
+    title: "Bakend Expert",
     description: "Ensures projects are delivered on time.",
-    imagePath: "assets/img/profile.jpeg",
+    imagePath: "assets/team/Nitish.jpeg",
   ),
   TeamMember(
     name: "Ravi Shankar Gupta",
-    title: "UI/UX Designer",
+    title: "UI/Graphics Designer",
     description: "Loves creprofileg user-friendly designs.",
     imagePath: "assets/img/profile.jpeg",
   ),

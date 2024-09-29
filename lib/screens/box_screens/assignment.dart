@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
-class NotesScreen extends StatefulWidget {
-  const NotesScreen({super.key});
+class AsignmentScr extends StatefulWidget {
+  const AsignmentScr({super.key});
 
   @override
-  State<NotesScreen> createState() => _NotesScreenState();
+  State<AsignmentScr> createState() => _AsignmentScrState();
 }
 
-class _NotesScreenState extends State<NotesScreen> {
+class _AsignmentScrState extends State<AsignmentScr> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Column(
+    return  Scaffold(body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [Center(child: Text("Work on progress",style: TextStyle(color: Colors.red,fontSize: 30,fontWeight: FontWeight.bold),))],),);
+
   }
 }
