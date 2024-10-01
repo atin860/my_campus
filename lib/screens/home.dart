@@ -14,6 +14,7 @@ import 'package:my_campus/screens/box_screens/id_card.dart';
 import 'package:my_campus/screens/box_screens/notes_scr.dart';
 import 'package:my_campus/screens/box_screens/quiz.dart';
 import 'package:my_campus/screens/box_screens/team.dart';
+import 'package:my_campus/screens/other%20screen/chatbot.dart';
 import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/appcontainer.dart';
@@ -72,7 +73,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   MainController controller = Get.find();
-
   // Function to open a website URL
   Future<void> _weburl() async {
     final Uri url = Uri.parse('https://www.bansaliet.in/');
@@ -121,16 +121,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Function to handle bottom navigation item tap
-
+// slider image list
   final List<String> imgList = [
-    // 'assets/img/back1.jpg',
     'assets/img/back2.jpg',
-    'assets/img/back7.JPG',
-    'assets/img/back4.JPG',
-    // 'assets/img/back5.jpg',
-    'assets/img/back6.JPG',
-    'assets/img/back3.jpg',
+    'assets/img/atin.jpeg',
     // Add more images here
   ];
 
@@ -138,8 +132,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kScaffoldColor,
-      appBar: const MyAppBar(
+      appBar: MyAppBar(
         automaticallyImplyLeading: true,
+        actions: [Padding(
+          padding: const EdgeInsets.only(right: 15),
+          child: IconButton(onPressed: (){
+            Get.to(()=>ChatScreen());
+          }, icon: const Icon(Icons.chat_bubble_outline,),)
+        ),],
         title: "Hello Atin!"),
       drawer: _buildCustomDrawer(),
       body: ListView(
@@ -162,9 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // Custom Drawer with Profile Info, Share, and Feedback
   Drawer _buildCustomDrawer() {
     return Drawer(
-      width: 270,
-      
-    
+       width: 270,
       child: Column(
         children: [
           Container(
@@ -250,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
               name: 'Notes',
               image: 'notes',
               onPressed: () {
-                Get.to(() => NotesScreen());
+                Get.to(() => const NotesScreen());
               },
             ),
           ],

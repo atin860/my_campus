@@ -8,18 +8,20 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final TextAlign? titleAlignment;
 final bool? automaticallyImplyLeading;
+final  Action? action;
   const MyAppBar({
     Key? key,
     required this.title,
     this.actions,
     this.backgroundColor,   
-    this.titleAlignment,  this.automaticallyImplyLeading,
+    this.titleAlignment,  this.automaticallyImplyLeading, this.action,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-    automaticallyImplyLeading: automaticallyImplyLeading??false,
+       iconTheme: IconThemeData(color: Colors.white,),
+    automaticallyImplyLeading: automaticallyImplyLeading??true,
       title: Text(title,style: kappbarTextStyle,textAlign:titleAlignment),
       actions: actions,
       backgroundColor: backgroundColor ??kappbarback,

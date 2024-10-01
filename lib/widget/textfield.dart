@@ -24,10 +24,10 @@ class MyTextField extends StatelessWidget {
             filled: true,
             label: Text(label),
             hintText: hintText,
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: const TextStyle(color: Colors.grey),
             // "biet14@gmail.com",
             border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue),
+                borderSide: const BorderSide(color: Colors.blue),
                 borderRadius: BorderRadius.circular(10))),
       ),
     );
@@ -76,7 +76,7 @@ class DateOfBirthField extends StatelessWidget {
               labelText: label,
               hintText: hintText,
               border:OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue),
+                  borderSide: const BorderSide(color: Colors.blue),
                   borderRadius: BorderRadius.circular(10))),
             ),
         ),
