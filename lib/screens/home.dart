@@ -1,4 +1,5 @@
 
+import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -14,8 +15,8 @@ import 'package:my_campus/screens/box_screens/id_card.dart';
 import 'package:my_campus/screens/box_screens/notes_scr.dart';
 import 'package:my_campus/screens/box_screens/quiz.dart';
 import 'package:my_campus/screens/box_screens/team.dart';
-import 'package:my_campus/screens/other%20screen/chatbot.dart';
 import 'package:my_campus/widget/appbar.dart';
+import 'package:my_campus/widget/chatbot.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/appcontainer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -55,7 +56,7 @@ class _HomeScrState extends State<HomeScr> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueAccent,
+        selectedItemColor: kappbarback,
         onTap: _onItemTapped,
       ),
     );
@@ -131,13 +132,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kScaffoldColor,
+      // backgroundColor: kScaffoldColor,
       appBar: MyAppBar(
         automaticallyImplyLeading: true,
         actions: [Padding(
           padding: const EdgeInsets.only(right: 15),
           child: IconButton(onPressed: (){
-            Get.to(()=>ChatScreen());
+            Get.to(()=>ChatBot());
           }, icon: const Icon(Icons.chat_bubble_outline,),)
         ),],
         title: "Hello Atin!"),
@@ -229,108 +230,113 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  Column AllBox() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            MyContainer(
-              name: 'Website',
-              image: 'web',
-              onPressed: () {
+  FadeInUp AllBox() {
+    return FadeInUp(
+      duration: const Duration(milliseconds: 1000),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              MyContainer(
+                name: 'Website',
+                image: 'web',
+                onPressed: () {
+           
+                  _weburl();
+                },
+              ),
+               MyContainer(
+                name: 'Result',
+                image: 'result',
+                onPressed: _result,
+              ),
+             
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              MyContainer(
+                name: 'Notes',
+                image: 'notes',
+                onPressed: () {
+                  Get.to(() => const NotesScreen());
+                },
+              ),
+               MyContainer(
+                name: 'Assignment',
+                image: 'assignment',
+                onPressed: () {  Get.to(()=>const AsignmentScr());},
+              ),
+              
+            ],
+          ), Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              MyContainer(
+                name: 'Attendance',
+                image: 'attendence',
+                onPressed: () {
+                  Get.to(() => const DailyAttendanceScreen());
+                },
+              ),
+              MyContainer(
+                name: 'ID Card',
+                image: 'IdCard',
+                onPressed: () {
+                  Get.to(() => const IdCardScreen(
+                        name: "Atin Sharma",
+                        rollNumber: "2204221520010",
+                        department: "CSE(AI)",
+                        imagePath: "assets/img/atin.jpeg",
+                      ));
+                },
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              MyContainer(
+                name: 'Event',
+                image: 'events',
+                onPressed: () {
+                  Get.to(()=>const EventScreen());
+                },
+              ),
+              MyContainer(
+                name: 'Quiz',
+                image: 'quiz',
+                onPressed: () {
+                  Get.to(() => const QuizScreen());
+                },
+              ),
+             
+            ],
+          ),
          
-                _weburl();
-              },
-            ),
-            MyContainer(
-              name: 'Notes',
-              image: 'notes',
-              onPressed: () {
-                Get.to(() => const NotesScreen());
-              },
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            MyContainer(
-              name: 'Result',
-              image: 'result',
-              onPressed: _result,
-            ),
-            MyContainer(
-              name: 'Quiz',
-              image: 'quiz',
-              onPressed: () {
-                Get.to(() => const QuizScreen());
-              },
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            MyContainer(
-              name: 'Event',
-              image: 'events',
-              onPressed: () {
-                Get.to(()=>const EventScreen());
-              },
-            ),
-            MyContainer(
-              name: 'Assignment',
-              image: 'assignment',
-              onPressed: () {  Get.to(()=>const AsignmentScr());},
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            MyContainer(
-              name: 'Attendance',
-              image: 'attendence',
-              onPressed: () {
-                Get.to(() => const DailyAttendanceScreen());
-              },
-            ),
-            MyContainer(
-              name: 'ID Card',
-              image: 'IdCard',
-              onPressed: () {
-                Get.to(() => const IdCardScreen(
-                      name: "Atin Sharma",
-                      rollNumber: "2204221520010",
-                      department: "CSE(AI)",
-                      imagePath: "assets/img/atin.jpeg",
-                    ));
-              },
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            MyContainer(
-              name: 'Faculty',
-              image: 'faculty',
-              onPressed: () {
-                Get.to(() => const FacultyListScreen());
-              },
-            ),
-            MyContainer(
-              name: 'Team',
-              image: 'team',
-              onPressed: () {
-                Get.to(() => const TeamMembersScreen());
-              },
-            ),
-          ],
-        ),
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              MyContainer(
+                name: 'Faculty',
+                image: 'faculty',
+                onPressed: () {
+                  Get.to(() => const FacultyListScreen());
+                },
+              ),
+              MyContainer(
+                name: 'Team',
+                image: 'team',
+                onPressed: () {
+                  Get.to(() => const TeamMembersScreen());
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

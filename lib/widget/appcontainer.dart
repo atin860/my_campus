@@ -23,10 +23,10 @@ class MyContainer extends StatelessWidget {
           padding: EdgeInsets.all(15),
           margin: EdgeInsets.all(8.0),
           decoration: BoxDecoration(boxShadow: const [
-            // BoxShadow(
-            //     color: Color.fromRGBO(255, 72, 0, 0.858),
-            //     blurRadius: 30.0,
-            //     offset: Offset(0, 10))
+            BoxShadow(
+                color: kappbarback,
+                blurRadius: 15.0,
+                offset: Offset(0, 5))
           ], color: Colors.white, borderRadius: BorderRadius.circular(15)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

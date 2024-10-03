@@ -19,7 +19,7 @@ final  Action? action;
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
+    return AppBar(  centerTitle: true,
        iconTheme: IconThemeData(color: Colors.white,),
     automaticallyImplyLeading: automaticallyImplyLeading??true,
       title: Text(title,style: kappbarTextStyle,textAlign:titleAlignment),

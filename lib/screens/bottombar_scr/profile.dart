@@ -26,11 +26,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Background Gradient
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xff1a73e8), Color(0xff4285f4)],
-              ),
+              // gradient: LinearGradient(
+              //   begin: Alignment.topCenter,
+              //   end: Alignment.bottomCenter,
+              //   colors: [Color(0xff1a73e8), Color(0xff4285f4)],
+              // ),
+              color: kappbarback
             ),
           ),
           // Profile Info

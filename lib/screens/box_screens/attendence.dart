@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
+import 'package:my_campus/widget/toast_msg.dart';
 
 class DailyAttendanceScreen extends StatelessWidget {
   const DailyAttendanceScreen({Key? key}) : super(key: key);
@@ -8,10 +10,7 @@ class DailyAttendanceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kScaffoldColor,
-      appBar: AppBar(
-        title: const Text("Daily Attendance"),
-        backgroundColor: kappbarback
-      ),
+      appBar:MyAppBar(title: "Daily Attendance"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
@@ -24,8 +23,10 @@ class DailyAttendanceScreen extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FloatingActionButton(
-          backgroundColor: Colors.blue,
-          onPressed: (){},child: Icon(Icons.play_arrow,size: 40,color: Colors.white,),),
+          backgroundColor: Colors.white,
+          onPressed: (){
+            successMessage("Attendence Added");
+          },child: Icon(Icons.check,size: 40,color: Colors.green,),),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class FacultyListScreen extends StatelessWidget {
@@ -8,11 +9,7 @@ class FacultyListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kScaffoldColor,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text("Meet Our Faculty",style: kLabelTextStyle,),
-        backgroundColor: kappbarback,
-      ),
+      appBar: MyAppBar(title: "Meet Our Faculty"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
@@ -154,18 +151,18 @@ class FacultyMember {
 
 // Sample Faculty Members Data
 final List<FacultyMember> facultyMembers = [
-  FacultyMember(
-    name: "Dr. Sameer Awasthi",
-    department: "Head Of Dipartment",
-    description: "Expert in Software Development and AI.",
-    imagePath: "assets/img/back1.jpg",
-  ),
-  FacultyMember(
-    name: "Suchi Panday",
-    department: "AI&ML",
-    description: "Specializes in Algebra and Geometry.",
-    imagePath: "assets/img/atin.jpeg",
-  ),
+  // FacultyMember(
+  //   name: "Dr. Sameer Awasthi",
+  //   department: "Head Of Dipartment",
+  //   description: "Expert in Software Development and AI.",
+  //   imagePath: "assets/img/back1.jpg",
+  // ),
+  // FacultyMember(
+  //   name: "Suchi Panday",
+  //   department: "AI&ML",
+  //   description: "Specializes in Algebra and Geometry.",
+  //   imagePath: "assets/img/atin.jpeg",
+  // ),
   FacultyMember(
     name: "Dr. Alice Smith",
     department: "Physics",
@@ -173,6 +170,16 @@ final List<FacultyMember> facultyMembers = [
     imagePath: "assets/img/atin.jpeg",
   ),
   FacultyMember(
+    name: "Mr. Bob Brown",
+    department: "Chemistry",
+    description: "Passionate about Organic Chemistry.",
+    imagePath: "assets/img/atin.jpeg",
+  ), FacultyMember(
+    name: "Mr. Bob Brown",
+    department: "Chemistry",
+    description: "Passionate about Organic Chemistry.",
+    imagePath: "assets/img/atin.jpeg",
+  ), FacultyMember(
     name: "Mr. Bob Brown",
     department: "Chemistry",
     description: "Passionate about Organic Chemistry.",

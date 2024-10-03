@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // Main two colors
 const kBackgroundColors = Color.fromARGB(255, 65, 131, 211);
-const kScaffoldColor = Color.fromARGB(255, 104, 232, 202);
+const kScaffoldColor = Color.fromARGB(255, 255, 255, 255);
 const kprimaryColors = Colors.grey;
 const kIconColors = Colors.white;
 const kappbarback= Color.fromARGB(255, 255, 169, 21);
