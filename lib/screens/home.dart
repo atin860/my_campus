@@ -267,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                MyContainer(
                 name: 'Assignment',
                 image: 'assignment',
-                onPressed: () {  Get.to(()=>const AsignmentScr());},
+                onPressed: () {  Get.to(()=> AssignmentScr());},
               ),
               
             ],
