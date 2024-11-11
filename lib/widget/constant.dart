@@ -5,15 +5,12 @@ const kBackgroundColors = Color.fromARGB(255, 65, 131, 211);
 const kScaffoldColor = Color.fromARGB(255, 255, 255, 255);
 const kprimaryColors = Colors.grey;
 const kIconColors = Colors.white;
-const kappbarback= Color.fromARGB(255, 255, 169, 21);
+const kappbarback = Color.fromARGB(255, 255, 169, 21);
 const kgradient = LinearGradient(
-              colors: [
-                 Colors.purple,
-                 Colors.blue
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            );
+  colors: [Colors.purple, Colors.blue],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+);
 
 // for large text heading type
 const kLabelTextStyle = TextStyle(

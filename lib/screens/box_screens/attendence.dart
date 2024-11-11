@@ -1,199 +1,179 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:my_campus/widget/appbar.dart';
-import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/toast_msg.dart';
 
-class DailyAttendanceScreen extends StatelessWidget {
-  const DailyAttendanceScreen({Key? key}) : super(key: key);
+class AttendanceScreen extends StatefulWidget {
+  @override
+  _AttendanceScreenState createState() => _AttendanceScreenState();
+}
+
+class _AttendanceScreenState extends State<AttendanceScreen> {
+  List<Timestamp> attendanceRecords = [];
+  bool _isLoading = false;
+  bool _isButtonEnabled = false;
+  bool testMode = true; //  true to enable testing
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAttendanceRecords();
+  }
+
+  // Load attendance records from Firestore
+  Future<void> _loadAttendanceRecords() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+          .collection('attendances')
+          .doc(userId)
+          .get();
+
+      if (docSnapshot.exists && docSnapshot.data() != null) {
+        List<dynamic> records = docSnapshot['records'] ?? [];
+        setState(() {
+          attendanceRecords = List<Timestamp>.from(records);
+        });
+      }
+    }
+    _checkTimeAndLimit();
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  // Check if attendance can be marked based on time and daily limit
+  void _checkTimeAndLimit() {
+    DateTime now = DateTime.now();
+    bool isTimeValid = now.hour == 9 || (now.hour == 10 && now.minute == 0);
+
+    // If in test mode, skip time validation
+    isTimeValid = testMode ? true : isTimeValid;
+
+    bool isAttendanceMarkedToday = attendanceRecords.any((timestamp) {
+      DateTime date = timestamp.toDate();
+      return date.year == now.year &&
+          date.month == now.month &&
+          date.day == now.day;
+    });
+
+    setState(() {
+      _isButtonEnabled = isTimeValid && !isAttendanceMarkedToday;
+    });
+  }
+
+  // Mark attendance and save it to Firestore
+  Future<void> _markAttendance() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      DocumentReference userDoc =
+          FirebaseFirestore.instance.collection('attendances').doc(userId);
+
+      await userDoc.set({
+        'userId': userId,
+        'records': FieldValue.arrayUnion([Timestamp.now()]),
+      }, SetOptions(merge: true));
+
+      _loadAttendanceRecords();
+      _checkTimeAndLimit();
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kScaffoldColor,
-      appBar:MyAppBar(title: "Daily Attendance"),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-          itemCount: studentAttendance.length,
-          itemBuilder: (context, index) {
-            return AttendanceCard(student: studentAttendance[index], context: context);
-          },
-        ),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FloatingActionButton(
-          backgroundColor: Colors.white,
-          onPressed: (){
-            successMessage("Attendence Added");
-          },child: Icon(Icons.check,size: 40,color: Colors.green,),),
-      ),
+      appBar: MyAppBar(title: 'Attendance System'),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _isButtonEnabled ? _markAttendance : null,
+                    child: Text(_isButtonEnabled
+                        ? 'Mark Attendance'
+                        : 'Attendance Button Disabled'),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: attendanceRecords.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          height: 50,
+                          width: double.infinity,
+                          child: Card(
+                            color: Colors.green,
+                            child: Text(
+                              attendanceRecords[index].toDate().toString(),
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Get.to(() => AdminScreen());
+      }),
     );
   }
 }
 
-class AttendanceCard extends StatelessWidget {
-  final Student student;
-  final BuildContext context;
-
-  const AttendanceCard({Key? key, required this.student, required this.context}) : super(key: key);
-
+// Admin screen to display all users' attendance
+class AdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _showAttendanceDetails(context, student),
-      child: Card(
-        elevation: 4,
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  student.imagePath,
-                  height: 80,
-                  width: 80,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Admin Attendance Records'),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream:
+            FirebaseFirestore.instance.collection('attendances').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          final documents = snapshot.data!.docs;
+          return ListView.builder(
+            itemCount: documents.length,
+            itemBuilder: (context, index) {
+              var data = documents[index].data() as Map<String, dynamic>;
+              var records = data['records'] as List<dynamic>;
+              return ListTile(
+                title: Text('User ID: ${data['userId']}'),
+                subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      student.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      student.rollNumber,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      student.attendanceStatus,
-                      style: TextStyle(
-                        color: student.attendanceStatus == 'Present' ? Colors.green : Colors.red,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                  children: records.map((timestamp) {
+                    return Text((timestamp as Timestamp).toDate().toString());
+                  }).toList(),
                 ),
-              ),
-            ],
-          ),
-        ),
+              );
+            },
+          );
+        },
       ),
     );
   }
-
-  // Function to show student attendance details in a bottom sheet
-  void _showAttendanceDetails(BuildContext context, Student student) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blueAccent.withOpacity(0.8), Colors.lightBlueAccent.withOpacity(0.8)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                student.name,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                student.rollNumber,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                "Attendance Status: ${student.attendanceStatus}",
-                style: const TextStyle(fontSize: 16, color: Colors.white),
-              ),
-              const SizedBox(height: 20),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  student.imagePath,
-                  height: 150,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }
-
-// Model for Student
-class Student {
-  final String name;
-  final String rollNumber;
-  final String attendanceStatus;
-  final String imagePath;
-
-  Student({
-    required this.name,
-    required this.rollNumber,
-    required this.attendanceStatus,
-    required this.imagePath,
-  });
-}
-
-// Sample Student Attendance Data
-final List<Student> studentAttendance = [
-  Student(
-    name: "Atin Sharma",
-    rollNumber: "CS101",
-    attendanceStatus: "Present",
-    imagePath: "assets/img/atin.jpeg",
-  ),
-  Student(
-    name: "John Doe",
-    rollNumber: "CS102",
-    attendanceStatus: "Absent",
-    imagePath: "assets/img/atin.jpeg",
-  ),
-  Student(
-    name: "Alice Smith",
-    rollNumber: "CS103",
-    attendanceStatus: "Present",
-    imagePath: "assets/img/atin.jpeg",
-  ),
-  Student(
-    name: "Bob Brown",
-    rollNumber: "CS104",
-    attendanceStatus: "Present",
-    imagePath: "assets/img/atin.jpeg",
-  ),
-  // Add more students as needed
-];
