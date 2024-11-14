@@ -78,7 +78,7 @@ Map user={};
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Colors.red,
             ),
           ),
           const SizedBox(height: 5),
@@ -100,15 +100,11 @@ Map user={};
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         children: [
-                    _buildInfoCard(Icons.insert_drive_file, "Roll_NO.", "+91 7905539159"),
-          _buildInfoCard(Icons.class_outlined, "Branch", "+91 7905539159"),
-          _buildInfoCard(Icons.calendar_month, "Year", "+91 7905539159"),
- 
-       
-         
-          _buildInfoCard(Icons.phone, "Phone", "+91 7905539159"),
-          _buildInfoCard(Icons.home, "Address", "Hardoi, India"),
-          _buildInfoCard(Icons.calendar_today, "Date of Birth", "28 Oct 2003"),
+                    _buildInfoCard(Icons.insert_drive_file, "Roll_NO.", user['Roll_No.'].toString()??"",),
+          _buildInfoCard(Icons.class_outlined, "Branch", user['Branch']??''),
+          _buildInfoCard(Icons.calendar_month, "Year", user['Year']??"", ),
+          _buildInfoCard(Icons.phone, "Phone", user['Mobile_No'].toString()??''),
+          _buildInfoCard(Icons.calendar_today, "Date of Birth", user['DOB']??''),
            _buildInfoCard(Icons.email, "Email", "${fireStoreService.getCurrentUserEmail()}"),
           // _buildInfoCard(
           //     Icons.school, "Education", "B.Tech in Computer Science"),

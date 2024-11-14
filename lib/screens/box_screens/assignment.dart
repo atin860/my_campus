@@ -4,9 +4,11 @@ import 'package:firebase_storage/firebase_storage.dart'; // Firebase Storage
 import 'package:firebase_database/firebase_database.dart'; // Firebase Realtime Database
 import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore
 import 'package:file_picker/file_picker.dart'; // File Picker
+import 'package:my_campus/widget/app_button.dart';
 import 'dart:io';
 
-import 'package:my_campus/widget/appbar.dart'; // For File I/O
+import 'package:my_campus/widget/appbar.dart';
+import 'package:my_campus/widget/textfield.dart'; // For File I/O
 
 
 class AssignmentScr extends StatefulWidget {
@@ -17,6 +19,7 @@ class AssignmentScr extends StatefulWidget {
 class _AssignmentScrState extends State<AssignmentScr> {
   File? selectedFile; // To store the selected file
   bool isUploading = false; // Upload progress state
+  TextEditingController _fileNameController = TextEditingController(); // To store custom file name
 
   // Function to pick a file
   Future<void> pickFile() async {
@@ -28,6 +31,10 @@ class _AssignmentScrState extends State<AssignmentScr> {
     if (result != null) {
       setState(() {
         selectedFile = File(result.files.single.path!);
+
+        // Set the default file name to the original file name
+        String fileName = result.files.single.name;
+        _fileNameController.text = fileName.split('.').first; // Set name without extension
       });
     } else {
       // User canceled the picker
@@ -36,39 +43,27 @@ class _AssignmentScrState extends State<AssignmentScr> {
 
   // Function to upload the file and save metadata
   Future<void> uploadFile() async {
-    if (selectedFile == null) return;
+    if (selectedFile == null || _fileNameController.text.isEmpty) return;
 
     setState(() {
       isUploading = true;
     });
 
     try {
-      // Define the file path and upload to Firebase Storage
-      String fileName = selectedFile!.path.split('/').last;
-      FirebaseStorage storage = FirebaseStorage.instance;
-      Reference ref = storage.ref().child('assignments/$fileName');
+      // Define the custom file name entered by the user
+      String fileExtension = selectedFile!.path.split('.').last; // Get the file extension
+      String fileName = '${_fileNameController.text}.$fileExtension'; // Combine name and extension
 
       // Upload the file to Firebase Storage
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child('assignments/$fileName');
       UploadTask uploadTask = ref.putFile(selectedFile!);
       TaskSnapshot snapshot = await uploadTask;
 
       // Get the file URL after upload
       String downloadUrl = await snapshot.ref.getDownloadURL();
 
-      // Save metadata to Firebase Realtime Database or Firestore
-      // Uncomment one based on which database you're using
-
-      // **Option 1: Save to Firebase Realtime Database**
-      /*
-      DatabaseReference databaseRef = FirebaseDatabase.instance.ref('assignments');
-      await databaseRef.push().set({
-        'file_name': fileName,
-        'url': downloadUrl,
-        'uploaded_at': DateTime.now().toIso8601String(),
-      });
-      */
-
-      // **Option 2: Save to Firestore**
+      // Save metadata to Firebase Firestore
       CollectionReference assignments = FirebaseFirestore.instance.collection('assignments');
       await assignments.add({
         'file_name': fileName,
@@ -95,21 +90,20 @@ class _AssignmentScrState extends State<AssignmentScr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 
-      'Assignment'),
+      appBar: MyAppBar(title: 'Assignment'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (selectedFile != null)
+              if (selectedFile != null) ...[
                 Text('Selected File: ${selectedFile!.path.split('/').last}'),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: pickFile,
-                child: Text('Choose File'),
-              ),
+                SizedBox(height: 10),
+               MyTextField(label: "Edit file name", hintText:'',controller:  _fileNameController,),
+                SizedBox(height: 20),
+              ],
+            AppButton(hint: "Choose file", onPressed: pickFile,),
               SizedBox(height: 20),
               isUploading
                   ? CircularProgressIndicator() // Show progress indicator during upload

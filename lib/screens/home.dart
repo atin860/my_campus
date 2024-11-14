@@ -1,4 +1,3 @@
-
 import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +18,7 @@ import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/chatbot.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/appcontainer.dart';
+import 'package:text_marquee/text_marquee.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -62,7 +62,6 @@ class _HomeScrState extends State<HomeScr> {
     );
   }
 }
-
 
 //home screen class,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 class HomeScreen extends StatefulWidget {
@@ -134,21 +133,36 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       // backgroundColor: kScaffoldColor,
       appBar: MyAppBar(
-        automaticallyImplyLeading: true,
-        actions: [Padding(
-          padding: const EdgeInsets.only(right: 15),
-          child: IconButton(onPressed: (){
-            Get.to(()=>ChatBot());
-          }, icon: const Icon(Icons.chat_bubble_outline,),)
-        ),],
-        title: "Hello Atin!"),
+          automaticallyImplyLeading: true,
+          actions: [
+            Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: IconButton(
+                  onPressed: () {
+                    Get.to(() => ChatBot());
+                  },
+                  icon: const Icon(
+                    Icons.chat_bubble_outline,
+                  ),
+                )),
+          ],
+          title: "Hello Atin!"),
       drawer: _buildCustomDrawer(),
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.only(left: 10, right: 10),
             child: Column(
               children: [
+                TextMarquee(
+                  "This app is developed by Atin Sharma and Team. Contact for more information.",
+                  spaceSize: 30,
+                  style: TextStyle(
+                      color: Colors.red, letterSpacing: 2, fontSize: 13),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 ImageSlider(),
                 const SizedBox(height: 20),
                 AllBox(),
@@ -163,73 +177,88 @@ class _HomeScreenState extends State<HomeScreen> {
   // Custom Drawer with Profile Info, Share, and Feedback
   Drawer _buildCustomDrawer() {
     return Drawer(
-       width: 270,
+      width: 270,
       child: Column(
         children: [
           Container(
             height: 300,
             width: double.infinity,
             padding: const EdgeInsets.only(top: 50),
-            decoration: const BoxDecoration(color: kappbarback,borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))),
-            child: const Column(children: [CircleAvatar(
-              
-            radius: 70,
-            backgroundImage:
-                AssetImage('assets/img/atin.jpeg'), // Example profile image
+            decoration: const BoxDecoration(
+                color: kappbarback,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20))),
+            child: const Column(
+              children: [
+                CircleAvatar(
+                  radius: 70,
+                  backgroundImage: AssetImage(
+                      'assets/img/atin.jpeg'), // Example profile image
+                ),
+                SizedBox(height: 20),
+                Text('Atin Sharma',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Text('atin.vSafe.com', style: TextStyle(color: Colors.black54)),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: 20),
-          Text('Atin Sharma',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          Text('atin.vSafe.com',
-              style: TextStyle(color: Colors.black54)),],),),
           const SizedBox(height: 20),
-         Padding(
-           padding: const EdgeInsets.all(8.0),
-           child: Column(children: [ ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  title: const Text('Home'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text('Profile'),
+                  onTap: () {
+                    Get.to(() => const PerInfo());
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.share),
+                  title: const Text('Share'),
+                  onTap: _shareApp,
+                ),
+                ListTile(
+                  leading: const Icon(Icons.feedback),
+                  title: const Text('Feedback'),
+                  onTap: _sendFeedback,
+                ),
+                ListTile(
+                  leading: const Icon(Icons.settings),
+                  title: const Text('Settings'),
+                  onTap: () {
+                    // Navigate to Settings screen
+                    Get.to(() => const PrivacySettingsScreen());
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Logout'),
+                  onTap: () {
+                    controller.logout();
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Profile'),
-              onTap: () {
-                 Get.to(()=> const PerInfo());
-                   
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.share),
-              title: const Text('Share'),
-              onTap: _shareApp,
-            ),
-            ListTile(
-              leading: const Icon(Icons.feedback),
-              title: const Text('Feedback'),
-              onTap: _sendFeedback,
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                // Navigate to Settings screen
-                  Get.to(()=> const PrivacySettingsScreen());
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: () {
-                controller.logout();
-              },
-            ),],),
-         )
+          )
         ],
       ),
     );
   }
+
   FadeInUp AllBox() {
     return FadeInUp(
       duration: const Duration(milliseconds: 1000),
@@ -242,16 +271,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 name: 'Website',
                 image: 'web',
                 onPressed: () {
-           
                   _weburl();
                 },
               ),
-               MyContainer(
+              MyContainer(
                 name: 'Result',
                 image: 'result',
                 onPressed: _result,
               ),
-             
             ],
           ),
           Row(
@@ -261,24 +288,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 name: 'Notes',
                 image: 'notes',
                 onPressed: () {
-                  Get.to(() => const NotesScreen());
+                  Get.to(() => AssignmentListScreen());
                 },
               ),
-               MyContainer(
+              MyContainer(
                 name: 'Assignment',
                 image: 'assignment',
-                onPressed: () {  Get.to(()=> AssignmentScr());},
+                onPressed: () {
+                  Get.to(() => AssignmentScr());
+                },
               ),
-              
             ],
-          ), Row(
+          ),
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               MyContainer(
                 name: 'Attendance',
                 image: 'attendence',
                 onPressed: () {
-                  Get.to(() => const DailyAttendanceScreen());
+                  Get.to(() => AttendanceScreen());
                 },
               ),
               MyContainer(
@@ -302,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 name: 'Event',
                 image: 'events',
                 onPressed: () {
-                  Get.to(()=>const EventScreen());
+                  Get.to(() => const EventScreen());
                 },
               ),
               MyContainer(
@@ -312,10 +341,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.to(() => const QuizScreen());
                 },
               ),
-             
             ],
           ),
-         
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

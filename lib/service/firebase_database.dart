@@ -7,6 +7,18 @@ class FireStoreService {
   static final CollectionReference users = _instance.collection('users');
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
+   // Method to get user data based on userId
+  static Future<DocumentSnapshot> getUserData(String userId) async {
+    try {
+      // Fetching user data from Firestore using the userId
+      DocumentSnapshot userDoc = await _instance.collection('users').doc(userId).get();
+      return userDoc;
+    } catch (e) {
+      print('Error fetching user data: $e');
+      rethrow;
+    }
+  }
+
   static Future<Map?> addUser(Map<String, dynamic> data) async {
     try {
       await users.doc(_auth.currentUser?.uid).set(data);

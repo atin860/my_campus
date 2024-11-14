@@ -11,8 +11,7 @@ class SplashScr extends StatefulWidget {
 }
 
 class _SplashScrState extends State<SplashScr> {
-  @override
-  @override
+ 
   // void initState() {
   //   super.initState();
   //   Timer(Duration(seconds: 3), () {
@@ -23,6 +22,7 @@ class _SplashScrState extends State<SplashScr> {
   // }
 
   @override
+  
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackgroundColors,
