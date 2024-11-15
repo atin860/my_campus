@@ -43,7 +43,8 @@ class _UserDataScrState extends State<UserDataScr> {
 
   // Function to fetch user data from Firestore
   Future<void> fetchUserData() async {
-    String userId = auth.currentUser!.uid; // Assuming you're using FirebaseAuth to get the current user's UID
+    String userId = auth.currentUser!
+        .uid; // Assuming you're using FirebaseAuth to get the current user's UID
 
     // Fetch the user data from Firestore
     DocumentSnapshot userDoc = await FireStoreService.getUserData(userId);
@@ -54,12 +55,14 @@ class _UserDataScrState extends State<UserDataScr> {
 
       setState(() {
         name.text = userData['Name'] ?? '';
-        rollNo.text = userData['Roll_No.'].toString(); // Assuming it's stored as a number
+        rollNo.text =
+            userData['Roll_No.'].toString(); // Assuming it's stored as a number
         number.text = userData['Mobile_No'].toString();
         dob.text = userData['DOB'] ?? '';
         selectedBranch = userData['Branch'];
         selectedYear = userData['Year'];
-        imageUrl = userData['image']; // If the user has an uploaded profile image
+        imageUrl =
+            userData['image']; // If the user has an uploaded profile image
       });
     }
   }
@@ -128,14 +131,12 @@ class _UserDataScrState extends State<UserDataScr> {
                 ),
                 const SizedBox(height: 20),
                 MyTextField(
-                  controller: name, label: 'Name', hintText: "Atin Sharma"
-                ),
+                    controller: name, label: 'Name', hintText: "Atin Sharma"),
                 MyTextField(
-                  keyboardType: TextInputType.number,
-                  controller: rollNo,
-                  label: 'Roll Number',
-                  hintText: "2204221520010"
-                ),
+                    keyboardType: TextInputType.number,
+                    controller: rollNo,
+                    label: 'Roll Number',
+                    hintText: "2204221520010"),
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
                   margin: const EdgeInsets.all(10),

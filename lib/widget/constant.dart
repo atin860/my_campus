@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:text_marquee/text_marquee.dart';
 
 // Main two colors
 const kBackgroundColors = Color.fromARGB(255, 65, 131, 211);
@@ -28,3 +29,10 @@ const kappbarTextStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 20.0,
     color: Color.fromARGB(255, 255, 255, 255));
+
+const advText = TextMarquee(
+  "This app is developed by Atin Sharma and Team. Contact for more information.",
+  rtl: false,
+  spaceSize: 30,
+  style: TextStyle(color: Colors.red, letterSpacing: 2, fontSize: 13),
+);
