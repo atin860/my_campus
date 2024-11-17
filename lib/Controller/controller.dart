@@ -1,10 +1,7 @@
 import 'dart:developer';
 
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:my_campus/Controller/api_scr.dart';
-import 'package:my_campus/screens/auth_view/login_scr.dart';
 import 'package:my_campus/screens/auth_view/register_scr.dart';
 import 'package:my_campus/screens/home.dart';
 
@@ -60,7 +57,10 @@ class MainController extends GetxController {
   }
 
 // Signup Screen controller
-  void signup(String email, String password,) async {
+  void signup(
+    String email,
+    String password,
+  ) async {
     showLoading();
     try {
       final credential = await auth.createUserWithEmailAndPassword(

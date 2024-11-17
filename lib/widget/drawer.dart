@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_campus/Controller/controller.dart';
-import 'package:my_campus/screens/bottombar_scr/profile%20ui/privacy_seq.dart';
+import 'package:my_campus/screens/profile%20ui/privacy_seq.dart';
 import 'package:my_campus/screens/helper/helper.dart';
 
 import 'package:my_campus/service/firebase_database.dart';

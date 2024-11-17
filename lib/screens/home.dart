@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:my_campus/Controller/controller.dart';
-import 'package:my_campus/screens/admin.dart';
+import 'package:my_campus/screens/admin/admin.dart';
 import 'package:my_campus/screens/profile%20ui/profile.dart';
 import 'package:my_campus/screens/helper/helper.dart';
 import 'package:my_campus/service/firebase_database.dart';
@@ -121,11 +121,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
+            padding: EdgeInsets.only(left: 10, right: 10),
             child: Column(
               children: [
                 advText,
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
                 helper.ImageSlider(),

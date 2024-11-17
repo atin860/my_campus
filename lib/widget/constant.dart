@@ -30,7 +30,7 @@ const kappbarTextStyle = TextStyle(
     fontSize: 20.0,
     color: Color.fromARGB(255, 255, 255, 255));
 
-const advText = TextMarquee(
+var advText = TextMarquee(
   "This app is developed by Atin Sharma and Team. Contact for more information.",
   rtl: false,
   spaceSize: 30,

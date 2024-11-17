@@ -5,9 +5,9 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_campus/Controller/controller.dart';
-import 'package:my_campus/screens/bottombar_scr/help_support.dart';
-import 'package:my_campus/screens/bottombar_scr/profile%20ui/notification.dart';
-import 'package:my_campus/screens/bottombar_scr/profile%20ui/privacy_seq.dart';
+import 'package:my_campus/screens/profile%20ui/help_support.dart';
+import 'package:my_campus/screens/profile%20ui/notification.dart';
+import 'package:my_campus/screens/profile%20ui/privacy_seq.dart';
 
 import 'package:my_campus/screens/helper/helper.dart';
 

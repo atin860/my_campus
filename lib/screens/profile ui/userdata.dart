@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:my_campus/Controller/controller.dart';
-
-import 'package:my_campus/screens/bottombar_scr/profile%20ui/user_datafoam.dart';
+import 'package:my_campus/screens/profile%20ui/user_datafoam.dart';
 import 'package:my_campus/screens/helper/helper.dart';
 
 import 'package:my_campus/service/firebase_database.dart';
@@ -24,7 +23,6 @@ class _UserDataState extends State<UserData> {
   final Links links = Links();
   Map user = {};
   String? imageUrl;
-  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -40,6 +38,7 @@ class _UserDataState extends State<UserData> {
       setState(() {
         // Your state update logic here
         user = data;
+        print(user);
       });
     }
   }
@@ -144,7 +143,8 @@ class _UserDataState extends State<UserData> {
             "Year",
             user['Year'] ?? "",
           ),
-          _buildInfoCard(Icons.phone, "Phone", user['Mobile_No'].toString()),
+          _buildInfoCard(
+              Icons.phone, "Phone", user['Mobile_No'].toString() ?? ''),
           _buildInfoCard(
               Icons.calendar_today, "Date of Birth", user['DOB'] ?? ''),
           _buildInfoCard(Icons.email, "Email",

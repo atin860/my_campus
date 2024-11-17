@@ -95,7 +95,7 @@ class Helper {
               name: 'Notes',
               image: 'notes',
               onPressed: () {
-                Get.to(() => AssignmentListScreen());
+                Get.to(() => NotesScreen());
               },
             ),
             MyContainer(

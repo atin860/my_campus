@@ -14,8 +14,8 @@ showLoading([String? text]) => Get.defaultDialog(
     content: Column(
       children: [
         SpinKitDualRing(
-            color: Colors.cyan,
-          ),
+          color: Colors.cyan,
+        ),
         if (text != null)
           Column(
             children: [

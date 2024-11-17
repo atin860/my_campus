@@ -1,7 +1,14 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:my_campus/screens/admin/uplode_assignment.dart';
+import 'package:my_campus/screens/admin/uplode_notes.dart';
+
+import 'package:my_campus/screens/box_screens/event.dart';
 import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/appcontainer.dart';
+import 'package:my_campus/widget/constant.dart';
 
 class AdminPanel extends StatefulWidget {
   const AdminPanel({super.key});
@@ -23,11 +30,20 @@ class _AdminPanelState extends State<AdminPanel> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                    child: CircleAvatar(
-                  radius: 80,
-                  backgroundImage: AssetImage(
-                    "assets/logo/logo.gif",
-                  ),
+                    child: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: kappbarback,
+                        width: 5,
+                        style: BorderStyle.solid,
+                      ),
+                      borderRadius: BorderRadius.circular(120),
+                      image: DecorationImage(
+                          image: AssetImage(
+                        "assets/logo/logo.gif",
+                      ))),
                 )),
                 SizedBox(
                   height: 50,
@@ -51,17 +67,23 @@ class _AdminPanelState extends State<AdminPanel> {
                         MyContainer(
                           name: 'Avinya',
                           image: 'events',
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(() => EventScreen());
+                          },
                         ),
                         MyContainer(
                           name: 'Assignment',
                           image: 'assignment',
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(() => UplodeAssignment());
+                          },
                         ),
                         MyContainer(
                           name: 'Notes',
                           image: 'notes',
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(() => UploadNotes());
+                          },
                         ),
                       ],
                     ),
