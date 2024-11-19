@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_campus/screens/box_screens/assignment.dart';
-import 'package:my_campus/screens/box_screens/attendence.dart';
+import 'package:my_campus/screens/box_screens/uplode_attendence.dart';
 import 'package:my_campus/screens/box_screens/event.dart';
 import 'package:my_campus/screens/box_screens/faculty.dart';
 import 'package:my_campus/screens/box_screens/id_card.dart';

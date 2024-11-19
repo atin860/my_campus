@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:my_campus/screens/admin/attendence_record.dart';
 import 'package:my_campus/screens/admin/uplode_assignment.dart';
 import 'package:my_campus/screens/admin/uplode_notes.dart';
 
@@ -62,7 +63,9 @@ class _AdminPanelState extends State<AdminPanel> {
                         MyContainer(
                           name: 'Attendance',
                           image: 'attendence',
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(() => AttendenceRecord());
+                          },
                         ),
                         MyContainer(
                           name: 'Avinya',

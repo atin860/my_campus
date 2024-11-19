@@ -14,7 +14,6 @@ class FireStoreService {
   // Method to get user data based on userId
   static Future<DocumentSnapshot> getUserData(String userId) async {
     try {
-      // Fetching user data from Firestore using the userId
       DocumentSnapshot userDoc =
           await firestore.collection('users').doc(userId).get();
       return userDoc;
@@ -68,7 +67,8 @@ class FireStoreService {
     return user?.email;
   }
 
-/////// Save Data in notes Collection
+////////////// /////////////////////////////////////////////////////////////////////////////////
+  /// Save Data in notes Collection
   Future<String> uploadFileToNotes(File file, String fileName) async {
     try {
       Reference ref = storage.ref().child('notes/$fileName');
@@ -100,7 +100,8 @@ class FireStoreService {
         .snapshots();
   }
 
-/////// Save Data in Assignmnet Collection
+/////// /////////////////////////////////////////////////////////////////////////////////
+  ///Save Data in Assignmnet Collection
   Future<String> uploadFileToAssignmnet(File file, String fileName) async {
     try {
       Reference ref = storage.ref().child('assignments/$fileName');
@@ -130,5 +131,27 @@ class FireStoreService {
         .collection('assignments')
         .orderBy('uploaded_at', descending: true)
         .snapshots();
+  }
+
+  String? getUserId() {
+    return _auth.currentUser?.uid;
+  }
+////////////////////////////////////////////////////////////////////
+
+  Future<int> getTotalSemesterDays() async {
+    DocumentSnapshot doc =
+        await firestore.collection('config').doc('semester').get();
+    return doc.exists ? doc['totalDays'] ?? 0 : 0;
+  }
+
+  Future<List<Timestamp>> getAttendanceRecords() async {
+    String? userId = _auth.currentUser?.uid;
+    if (userId == null) return [];
+    DocumentSnapshot doc =
+        await firestore.collection('attendances').doc(userId).get();
+    if (doc.exists && doc.data() != null) {
+      return List<Timestamp>.from(doc['records'] ?? []);
+    }
+    return [];
   }
 }
