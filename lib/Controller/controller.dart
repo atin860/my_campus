@@ -15,9 +15,9 @@ class MainController extends GetxController {
     Future.delayed(const Duration(seconds: 1), () {
       auth.userChanges().listen((user) {
         if (user == null) {
-          Get.offAll(() => RegisterScr());
+          Get.offAll(() => const RegisterScr());
         } else {
-          Get.offAll(() => HomeScr());
+          Get.offAll(() => const HomeScr());
         }
       });
     });

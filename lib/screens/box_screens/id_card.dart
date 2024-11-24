@@ -19,7 +19,7 @@ class IdCardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar:MyAppBar(title: "My Id Card"),
+      appBar: MyAppBar(title: "My Id Card"),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -29,59 +29,73 @@ class IdCardScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Container(
-            width: double.infinity,padding: EdgeInsets.all(10),
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
               height: 200,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-         color: Colors.blue
-              ),
+                  borderRadius: BorderRadius.circular(12), color: Colors.blue),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(child: Text("BIET LUCKNOW",style: kLabelTextStyle,)),
-                    SizedBox(height: 20,),
+                    Center(
+                        child: Text(
+                      "BIET LUCKNOW",
+                      style: kLabelTextStyle,
+                    )),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Row(
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ClipOval(
-                          
                           child: Image.asset(
                             imagePath,
                             height: 80,
                             width: 80,
                             fit: BoxFit.cover,
                           ),
-                        ),SizedBox(width: 30,),
-                        Column(crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Text(
-
-                      "Name: $name",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),SizedBox(height: 5,),
-                    Text(
-                      "Roll No: $rollNumber",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    Text(
-                      "Department: $department",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),],)
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Name: $name",
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Roll No: $rollNumber",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Department: $department",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                     const SizedBox(height: 10),
-                    
                   ],
                 ),
               ),

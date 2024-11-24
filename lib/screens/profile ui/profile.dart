@@ -1,18 +1,12 @@
 import 'dart:developer';
-
 import 'package:animate_do/animate_do.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/screens/profile%20ui/help_support.dart';
 import 'package:my_campus/screens/profile%20ui/notification.dart';
 import 'package:my_campus/screens/profile%20ui/privacy_seq.dart';
-
 import 'package:my_campus/screens/helper/helper.dart';
-
 import 'package:my_campus/screens/profile%20ui/user_data.dart';
-
 import 'package:my_campus/service/firebase_database.dart';
 import 'package:my_campus/widget/constant.dart';
 
@@ -31,11 +25,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final Links links = Links();
   Map user = {};
   String? imageUrl;
+
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getUser();
-    fetchProfileImage();
   }
 
   void getUser() async {
@@ -49,15 +43,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         print(user);
       });
     }
-  }
-
-  // Function to fetch profile image from Firebase Storage
-  Future<void> fetchProfileImage() async {
-    String userId = auth.currentUser!.uid;
-    String url = await links.getProfileImageUrl(userId);
-    setState(() {
-      imageUrl = url;
-    });
   }
 
   @override
@@ -90,19 +75,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       children: [
         ClipOval(
-          child: imageUrl != null
-              ? Image.network(
-                  imageUrl!,
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.cover,
-                )
-              : Image.asset(
-                  "assets/logo/logo.gif",
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.cover,
-                ),
+          child: Image.asset(
+            "assets/logo/logo.gif",
+            width: 150,
+            height: 150,
+            fit: BoxFit.cover,
+          ),
         ),
         const SizedBox(height: 10),
         Text(
@@ -128,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // Profile Details with Cards for Info, Settings, and Actions
   Widget _buildProfileDetails() {
     return FadeInUp(
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         decoration: const BoxDecoration(
@@ -145,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: "Personal Info",
               subtitle: "View and update your personal details",
               onTap: () {
-                Get.to(() => UserData());
+                Get.to(() => const UserData());
               },
             ),
             _buildProfileCard(
@@ -154,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               subtitle: "Manage your account privacy",
               onTap: () {
                 // Navigate to Privacy Settings
-                Get.to(() => PrivacySettingsScreen());
+                Get.to(() => const PrivacySettingsScreen());
               },
             ),
             _buildProfileCard(
@@ -163,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               subtitle: "Manage your notification preferences",
               onTap: () {
                 // Navigate to Notifications
-                Get.to(() => NotificationsScreen());
+                Get.to(() => const NotificationsScreen());
               },
             ),
             _buildProfileCard(
@@ -172,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               subtitle: "Get help and find answers",
               onTap: () {
                 // Navigate to Help & Support
-                Get.to(() => HelpSupportScreen());
+                Get.to(() => const HelpSupportScreen());
               },
             ),
             const SizedBox(height: 30),

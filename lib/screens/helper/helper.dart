@@ -120,7 +120,7 @@ class Helper {
                       name: "Atin Sharma",
                       rollNumber: "2204221520010",
                       department: "CSE(AI)",
-                      imagePath: "assets/img/atin.jpeg",
+                      imagePath: 'assets/logo/logo.gif',
                     ));
               },
             ),

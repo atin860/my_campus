@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -51,7 +50,7 @@ class _UploadNotesState extends State<UploadNotes> {
   Future<void> uploadFile(BuildContext context) async {
     if (selectedFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a file to upload.')),
+        const SnackBar(content: Text('Please select a file to upload.')),
       );
       return;
     }
@@ -92,17 +91,17 @@ class _UploadNotesState extends State<UploadNotes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: 'Notes'),
+      appBar: const MyAppBar(title: 'Notes'),
       body: Column(
         children: [
           // Top Container for file upload
           Container(
-            padding: EdgeInsets.all(16),
-            margin: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 213, 222, 228),
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: kappbarback,
                   spreadRadius: 2,
@@ -114,21 +113,21 @@ class _UploadNotesState extends State<UploadNotes> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Upload Notes",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 if (selectedFile != null) ...[
                   Text('Selected File: ${selectedFile!.path.split('/').last}'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   MyTextField(
                     label: "Enter file name (optional)",
                     hintText: '',
                     controller: _fileNameController,
                     onTap: () => _fileNameController.clear,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                 ],
                 Row(
                   children: [
@@ -138,23 +137,23 @@ class _UploadNotesState extends State<UploadNotes> {
                         onPressed: pickFile,
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     isUploading
-                        ? CircularProgressIndicator()
+                        ? const CircularProgressIndicator()
                         : ElevatedButton(
                             onPressed: selectedFile == null
                                 ? null
                                 : () {
                                     uploadFile(context);
                                   },
-                            child: Text('Upload'),
+                            child: const Text('Upload'),
                           ),
                   ],
                 ),
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           // List of uploaded files
@@ -163,10 +162,10 @@ class _UploadNotesState extends State<UploadNotes> {
               stream: fireStoreService.fetchUploadedFilesToNOtes(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No notes uploaded yet.'));
+                  return const Center(child: Text('No notes uploaded yet.'));
                 }
                 final files = snapshot.data!.docs;
 
@@ -184,7 +183,7 @@ class _UploadNotesState extends State<UploadNotes> {
                             'Uploaded: ${DateTime.parse(file['uploaded_at']).toLocal()}',
                           ),
                           trailing: IconButton(
-                            icon: Icon(Icons.download),
+                            icon: const Icon(Icons.download),
                             onPressed: () {
                               final url = file['url'];
                               ScaffoldMessenger.of(context).showSnackBar(

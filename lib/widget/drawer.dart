@@ -1,11 +1,9 @@
 import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/screens/profile%20ui/privacy_seq.dart';
-import 'package:my_campus/screens/helper/helper.dart';
-
 import 'package:my_campus/service/firebase_database.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:share_plus/share_plus.dart';
@@ -25,8 +23,8 @@ class _MyDrawerState extends State<MyDrawer> {
   @override
   void initState() {
     super.initState();
-    fetchProfileImage();
-    getUser(); // Fetch profile image when the widget is initialized
+    fetchUserData();
+    getUser();
   }
 
   void getUser() async {
@@ -42,14 +40,21 @@ class _MyDrawerState extends State<MyDrawer> {
     }
   }
 
-  // Function to fetch profile image from Firebase Storage
-  Future<void> fetchProfileImage() async {
-    String userId = auth.currentUser!.uid; // Get the current user's UID
-    Links links = Links();
-    String url = await links.getProfileImageUrl(userId);
-    setState(() {
-      imageUrl = url; // Update the imageUrl state with the fetched URL
-    });
+  // Function to fetch user data from Firestore
+  Future<void> fetchUserData() async {
+    String userId = auth.currentUser!
+        .uid; // Assuming you're using FirebaseAuth to get the current user's UID
+
+    // Fetch the user data from Firestore
+    DocumentSnapshot userDoc = await FireStoreService.getUserData(userId);
+
+    if (userDoc.exists) {
+      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+
+      setState(() {
+        imageUrl = userData['image'];
+      });
+    }
   }
 
   // Function to handle share action
@@ -96,13 +101,15 @@ class _MyDrawerState extends State<MyDrawer> {
               children: [
                 CircleAvatar(
                   radius: 70,
-                  backgroundImage: imageUrl != null
-                      ? NetworkImage(imageUrl!) // Use the fetched image URL
-                      : const AssetImage('assets/img/atin.jpeg')
-                          as ImageProvider, // Default image if URL is null
+                  backgroundColor: Colors.grey[
+                      300], // Default background color if image not loaded
+                  backgroundImage: imageUrl != null && imageUrl!.isNotEmpty
+                      ? NetworkImage(imageUrl!) // Display fetched image URL
+                      : const AssetImage('assets/logo/logo.gif')
+                          as ImageProvider, // Default placeholder image
                 ),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   'Atin Sharma',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),

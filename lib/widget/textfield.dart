@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_campus/widget/constant.dart';
 
 class MyTextField extends StatelessWidget {
   const MyTextField({
@@ -45,11 +44,11 @@ class DateOfBirthField extends StatelessWidget {
   final String hintText;
 
   const DateOfBirthField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.label,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:my_campus/screens/admin/attendence_record.dart';
+import 'package:my_campus/screens/admin/register_userdata.dart';
 import 'package:my_campus/screens/admin/uplode_assignment.dart';
 import 'package:my_campus/screens/admin/uplode_notes.dart';
-
+import 'package:my_campus/screens/admin/all_userdata.dart';
 import 'package:my_campus/screens/box_screens/event.dart';
 import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/appcontainer.dart';
@@ -22,7 +23,7 @@ class _AdminPanelState extends State<AdminPanel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: "Hello Admin !"),
+      appBar: MyAppBar(title: "Hello Sir !"),
       body: ListView(
         children: [
           Padding(
@@ -86,6 +87,13 @@ class _AdminPanelState extends State<AdminPanel> {
                           image: 'notes',
                           onPressed: () {
                             Get.to(() => UploadNotes());
+                          },
+                        ),
+                        MyContainer(
+                          name: 'User info',
+                          image: 'attendence',
+                          onPressed: () {
+                            Get.to(() => StudentData());
                           },
                         ),
                       ],

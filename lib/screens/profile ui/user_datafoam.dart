@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,13 +27,13 @@ class _UserDataScrState extends State<UserDataScr> {
   TextEditingController rollNo = TextEditingController();
   TextEditingController number = TextEditingController();
   final TextEditingController dob = TextEditingController();
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+
   String? selectedBranch;
   String? selectedYear;
   String? imageUrl;
   File? pickedImage;
-
   final ImagePicker imgpicker = ImagePicker();
-
   List<String> branches = ['AI', 'AIML'];
   List<String> years = ['2nd Year', '3rd Year', '4th Year'];
 
@@ -56,7 +58,7 @@ class _UserDataScrState extends State<UserDataScr> {
       setState(() {
         name.text = userData['Name'] ?? '';
         rollNo.text =
-            userData['Roll_No.'].toString(); // Assuming it's stored as a number
+            userData['Roll_No'].toString(); // Assuming it's stored as a number
         number.text = userData['Mobile_No'].toString();
         dob.text = userData['DOB'] ?? '';
         selectedBranch = userData['Branch'];
@@ -271,23 +273,55 @@ class _UserDataScrState extends State<UserDataScr> {
   // Function to pick an image from the camera or gallery
   void pickImage(ImageSource imageType) async {
     try {
+      // Pick an image from the specified source (camera or gallery)
       final photo = await ImagePicker().pickImage(source: imageType);
-      if (photo == null) return;
+      if (photo == null) return; // No image selected, return early
+
       final tempImage = File(photo.path);
       setState(() {
-        pickedImage = tempImage;
-      });
-      StorageService.uploadFile("profilePic", "fileName.jpg", file: pickedImage)
-          .then((value) {
-        FireStoreService.updateUser({"image": value});
-        print("File uploaded \n $value");
+        pickedImage = tempImage; // Set the picked image in the state
       });
 
+      // Get the current user's email and replace special characters to make it a valid file name
+      String userEmail = FirebaseAuth.instance.currentUser!.email!;
+      String sanitizedEmail = userEmail.replaceAll(
+          RegExp(r'[^a-zA-Z0-9]'), '_'); // Replace special characters
+
+      // Use the sanitized email as the file name
+      String fileName =
+          "$sanitizedEmail-profile.jpg"; // Use sanitized email as file name
+      String uploadPath =
+          "profilePictures/$fileName"; // Path in Firebase Storage
+
+      // Upload the file to Firebase Storage
+      UploadTask uploadTask =
+          FirebaseStorage.instance.ref(uploadPath).putFile(tempImage);
+
+      // Wait for the upload to complete and get the download URL
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      // After upload, update the user's profile image URL in Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        "image": downloadUrl, // Store the image URL in Firestore
+      });
+
+      // Optionally, update the local state to reflect the new image
+      setState(() {
+        imageUrl = downloadUrl;
+      });
+
+      // Close the bottom sheet or dialog
       Get.back();
+
+      // Show a success message
+      successMessage("Profile image updated successfully!");
     } catch (error) {
-      debugPrint(error.toString());
+      debugPrint("Error uploading image: $error");
     }
-    successMessage("Update Image");
   }
 
   // Function to add user data to Firestore
@@ -295,7 +329,7 @@ class _UserDataScrState extends State<UserDataScr> {
     FocusManager.instance.primaryFocus!.unfocus();
     Map<String, dynamic> users = {
       "Name": name.text,
-      "Roll_No.": int.parse(rollNo.text.trim()),
+      "Roll_No": int.parse(rollNo.text.trim()),
       "Branch": selectedBranch,
       "Year": selectedYear,
       "DOB": dob.text,

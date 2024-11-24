@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:my_campus/Controller/controller.dart';
@@ -25,7 +23,7 @@ class _HomeScrState extends State<HomeScr> {
   int _selectedIndex = 0;
   static final List<Widget> _screens = <Widget>[
     const HomeScreen(),
-    AdminPanel(),
+    const AdminPanel(),
     const ProfileScreen(),
   ];
 
@@ -67,35 +65,32 @@ class _HomeScreenState extends State<HomeScreen> {
   MainController controller = Get.find();
   final FireStoreService fireStoreService = FireStoreService();
   final Helper helper = Helper();
-  Map user = {};
-  String? imageUrl;
-// get user data from firebase
-  void getUser() async {
-    log("chalo");
-    Map data = await FireStoreService.getUser();
-    log("data $data");
-    if (mounted) {
-      setState(() {
-        // Your state update logic here
-        user = data;
-      });
-    }
+  Map<String, dynamic>? userData; // Holds user data
+  bool isLoading = true; // For showing a loading spinner
+  Map<dynamic, dynamic> user = {};
+  @override
+  void initState() {
+    super.initState();
+    getUser();
   }
 
-  Future<void> _loadImage() async {
+  // Fetch user data from firebase
+  void getUser() async {
+    log("Fetching user data...");
     try {
-      // Reference to the file in Firebase Storage
-      final storageRef =
-          FirebaseStorage.instance.ref().child('profilePic/fileName.jpg');
-
-      // Get the download URL
-      final url = await storageRef.getDownloadURL();
-
-      setState(() {
-        imageUrl = url;
-      });
+      Map data = await FireStoreService.getUser();
+      log("Fetched data: $data");
+      if (mounted) {
+        setState(() {
+          user = data;
+          isLoading = false;
+        });
+      }
     } catch (e) {
-      print("Error fetching image URL: $e");
+      log("Error fetching user data: $e");
+      setState(() {
+        isLoading = false; // Stop the loader if there's an error
+      });
     }
   }
 
@@ -103,29 +98,30 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-          automaticallyImplyLeading: true,
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: 15),
-                child: IconButton(
-                  onPressed: () {
-                    Get.to(() => ChatBot());
-                  },
-                  icon: const Icon(
-                    Icons.chat_bubble_outline,
-                  ),
-                )),
-          ],
-          title: "Hello Atin!"),
-      drawer: MyDrawer(),
+        automaticallyImplyLeading: true,
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: IconButton(
+                onPressed: () {
+                  Get.to(() => ChatBot());
+                },
+                icon: const Icon(
+                  Icons.chat_bubble_outline,
+                ),
+              )),
+        ],
+        title: "Hello ${user["Name"]}!",
+      ),
+      drawer: const MyDrawer(),
       body: ListView(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 10, right: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10),
             child: Column(
               children: [
                 advText,
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 helper.ImageSlider(),

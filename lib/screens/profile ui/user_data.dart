@@ -1,13 +1,9 @@
-import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:my_campus/Controller/controller.dart';
-
 import 'package:my_campus/screens/profile%20ui/user_datafoam.dart';
-import 'package:my_campus/screens/helper/helper.dart';
-
 import 'package:my_campus/service/firebase_database.dart';
 import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
@@ -21,55 +17,62 @@ class UserData extends StatefulWidget {
 
 class _UserDataState extends State<UserData> {
   final FireStoreService fireStoreService = FireStoreService();
-  final Links links = Links();
   Map user = {};
   String? imageUrl;
+  bool isLoading = true; // For showing a loader during data fetch
+
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getUser();
-    fetchProfileImage();
+    fetchUserData(); // Fetch user data including the image URL
   }
 
-  void getUser() async {
-    log("chalo");
-    Map data = await FireStoreService.getUser();
-    log("data $data");
-    if (mounted) {
+  // Fetch user data from Firestore
+  Future<void> fetchUserData() async {
+    try {
+      String userId = auth.currentUser!.uid; // Current user's UID
+      DocumentSnapshot userDoc = await FireStoreService.getUserData(userId);
+
+      if (userDoc.exists) {
+        Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+        setState(() {
+          user = userData; // Populate user data
+          imageUrl = userData['image']; // Assign profile image URL
+          isLoading = false; // Data fetch complete
+        });
+      } else {
+        // Handle case when no user document is found
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error fetching user data: $e");
       setState(() {
-        // Your state update logic here
-        user = data;
-        print(user);
+        isLoading = false;
       });
     }
   }
 
-  // Function to fetch profile image from Firebase Storage
-  Future<void> fetchProfileImage() async {
-    String userId = auth.currentUser!
-        .uid; // Assuming you're using FirebaseAuth to get the current user's UID
-    String url = await links.getProfileImageUrl(userId);
-    setState(() {
-      imageUrl = url; // Update the imageUrl state with the fetched URL
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    fireStoreService.getCurrentUserEmail();
     return Scaffold(
       backgroundColor: kScaffoldColor,
       appBar: MyAppBar(
         title: "User Data",
         titleAlignment: TextAlign.center,
       ),
-      body: Column(
-        children: [
-          _buildProfileHeader(context),
-          const SizedBox(height: 10),
-          _buildPersonalInfoList(context),
-        ],
-      ),
+      body: isLoading
+          ? const Center(
+              child:
+                  CircularProgressIndicator()) // Show loader while fetching data
+          : Column(
+              children: [
+                _buildProfileHeader(context),
+                const SizedBox(height: 10),
+                _buildPersonalInfoList(context),
+              ],
+            ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(10.0),
         child: FloatingActionButton(
@@ -77,7 +80,7 @@ class _UserDataState extends State<UserData> {
             Get.to(() => UserDataScr());
           },
           backgroundColor: Colors.red,
-          child: Icon(
+          child: const Icon(
             Icons.edit,
             color: Colors.white,
           ),
@@ -92,23 +95,19 @@ class _UserDataState extends State<UserData> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          ClipOval(
-            child: imageUrl != null
-                ? CircleAvatar(
-                    radius: 70,
-                    child: // Display the profile image
-                        imageUrl != null
-                            ? Image.network(imageUrl!,
-                                width: 150, height: 150, fit: BoxFit.cover)
-                            : Image(image: AssetImage("assets/logo/logo.gif"))
-                    // ,
-                    )
-                : CircularProgressIndicator(),
+          CircleAvatar(
+            radius: 70,
+            backgroundColor: Colors
+                .grey[300], // Default background color if image not loaded
+            backgroundImage: imageUrl != null && imageUrl!.isNotEmpty
+                ? NetworkImage(imageUrl!) // Display fetched image URL
+                : const AssetImage('assets/logo/logo.gif')
+                    as ImageProvider, // Default placeholder image
           ),
           const SizedBox(height: 15),
           Text(
-            user['Name'] ?? "hello user !",
-            style: TextStyle(
+            user['Name'] ?? "Hello User!",
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Colors.red,
@@ -136,22 +135,20 @@ class _UserDataState extends State<UserData> {
           _buildInfoCard(
             Icons.insert_drive_file,
             "Roll_NO.",
-            user['Roll_No.'].toString(),
+            user['Roll_No']?.toString() ?? 'Not Available',
           ),
           _buildInfoCard(Icons.class_outlined, "Branch", user['Branch'] ?? ''),
           _buildInfoCard(
             Icons.calendar_month,
             "Year",
-            user['Year'] ?? "",
+            user['Year'] ?? "Not Available",
           ),
           _buildInfoCard(
-              Icons.phone, "Phone", user['Mobile_No'].toString() ?? ''),
+              Icons.phone, "Phone", user['Mobile_No']?.toString() ?? ''),
           _buildInfoCard(
               Icons.calendar_today, "Date of Birth", user['DOB'] ?? ''),
           _buildInfoCard(Icons.email, "Email",
-              "${fireStoreService.getCurrentUserEmail()}"),
-          // _buildInfoCard(
-          //     Icons.school, "Education", "B.Tech in Computer Science"),
+              fireStoreService.getCurrentUserEmail() ?? ''),
         ],
       ),
     );
@@ -160,17 +157,17 @@ class _UserDataState extends State<UserData> {
   // Helper widget to build each info card with an icon and data
   Widget _buildInfoCard(IconData icon, String title, String data) {
     return Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        child: ListTile(
-            leading: Icon(icon, size: 30, color: Colors.blueAccent),
-            title: Text(
-              title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            subtitle: fireStoreService.getCurrentUserEmail()!.isNotEmpty
-                ? Text(data)
-                : Center(child: CircularProgressIndicator())));
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: ListTile(
+        leading: Icon(icon, size: 30, color: Colors.blueAccent),
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(data),
+      ),
+    );
   }
 }

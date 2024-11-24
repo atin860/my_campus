@@ -28,7 +28,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: Colors.white,
       ),
       automaticallyImplyLeading: automaticallyImplyLeading ?? true,
-      title: Text(title, style: kappbarTextStyle, textAlign: titleAlignment),
+      title: Text(
+        title,
+        style: kappbarTextStyle,
+        textAlign: titleAlignment,
+      ),
       actions: actions,
       backgroundColor: backgroundColor ?? kappbarback,
     );

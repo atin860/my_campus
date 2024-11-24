@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_campus/widget/appbar.dart';
-import 'package:my_campus/widget/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelpSupportScreen extends StatelessWidget {
@@ -39,27 +38,32 @@ class HelpSupportScreen extends StatelessWidget {
               title: const Text('FAQ'),
               subtitle: const Text('Frequently Asked Questions'),
               onTap: () {
-                _launchURL("https://www.example.com/faqs"); // Change URL as needed
+                _launchURL(
+                    "https://www.example.com/faqs"); // Change URL as needed
               },
             ),
             const Divider(),
             // Contact Support Button
             ListTile(
-              leading: const Icon(Icons.support_agent, color: Colors.blueAccent),
+              leading:
+                  const Icon(Icons.support_agent, color: Colors.blueAccent),
               title: const Text('Contact Support'),
               subtitle: const Text('Reach out to us for assistance'),
               onTap: () {
-                _launchURL("mailto:support@example.com"); // Example contact email
+                _launchURL(
+                    "mailto:support@example.com"); // Example contact email
               },
             ),
             const Divider(),
             // Report an Issue
             ListTile(
-              leading: const Icon(Icons.report_problem, color: Colors.orangeAccent),
+              leading:
+                  const Icon(Icons.report_problem, color: Colors.orangeAccent),
               title: const Text('Report an Issue'),
               subtitle: const Text('Let us know if you encountered a problem'),
               onTap: () {
-                _launchURL("mailto:support@example.com?subject=Issue%20Report"); // Pre-filled email
+                _launchURL(
+                    "mailto:support@example.com?subject=Issue%20Report"); // Pre-filled email
               },
             ),
             const Divider(),
@@ -69,7 +73,8 @@ class HelpSupportScreen extends StatelessWidget {
               title: const Text('Send Feedback'),
               subtitle: const Text('Tell us what you think'),
               onTap: () {
-                _launchURL("mailto:support@example.com?subject=Feedback"); // Pre-filled email
+                _launchURL(
+                    "mailto:support@example.com?subject=Feedback"); // Pre-filled email
               },
             ),
             const Divider(),
@@ -77,13 +82,21 @@ class HelpSupportScreen extends StatelessWidget {
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
-                  _launchURL("https://www.example.com/help"); // Example help center URL
+                  _launchURL(
+                      "https://www.example.com/help"); // Example help center URL
                 },
-                icon: const Icon(Icons.public,color: Colors.white,),
-                label: const Text("Visit Our Help Center",style: TextStyle(color: Colors.white),),
+                icon: const Icon(
+                  Icons.public,
+                  color: Colors.white,
+                ),
+                label: const Text(
+                  "Visit Our Help Center",
+                  style: TextStyle(color: Colors.white),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 ),
               ),
             )

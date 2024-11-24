@@ -14,12 +14,33 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   bool _isLoading = false;
   bool _isButtonEnabled = false;
   bool testMode = true; // true to enable testing
-  int totalSemesterDays = 30; // Example total semester days (can be dynamic)
+  int totalSemesterDays = 0;
 
   @override
   void initState() {
     super.initState();
     _loadAttendanceRecords();
+    _loadSemesterDays();
+  }
+
+  // Load total semester days from Firestore
+  Future<void> _loadSemesterDays() async {
+    setState(() {
+      _isLoading = true;
+    });
+    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+        .collection('settings')
+        .doc('semester')
+        .get();
+
+    if (docSnapshot.exists) {
+      setState(() {
+        totalSemesterDays = docSnapshot['totalDays'] ?? 0;
+      });
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   // Load attendance records from Firestore
@@ -78,7 +99,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     if (userId != null) {
       DocumentReference userDoc =
           FirebaseFirestore.instance.collection('attendances').doc(userId);
-
       await userDoc.set({
         'userId': userId,
         'records': FieldValue.arrayUnion([Timestamp.now()]),
@@ -102,31 +122,30 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     double attendancePercentage = _calculateAttendancePercentage();
-
     return Scaffold(
-      appBar: MyAppBar(title: 'Mark Attendance'),
+      appBar: const MyAppBar(title: 'Mark Attendance'),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _isButtonEnabled ? _markAttendance : null,
                     child: Text(_isButtonEnabled
                         ? 'Mark Attendance'
                         : 'Attendance Button Disabled'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     'Attendance Percentage: ${attendancePercentage.toStringAsFixed(2)}%',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(
@@ -138,7 +157,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Graph Representation
                   SizedBox(
                     height: 200,
@@ -151,7 +170,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                 '${attendancePercentage.toStringAsFixed(1)}%',
                             color: Colors.green,
                             radius: 50,
-                            titleStyle: TextStyle(
+                            titleStyle: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
@@ -170,15 +189,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Attendance Dates:',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Expanded(
                     child: ListView.builder(
                       itemCount: attendanceRecords.length,
@@ -196,9 +215,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                 children: [
                                   Text(
                                     '${date.day}-${date.month}-${date.year}',
-                                    style: TextStyle(color: Colors.white),
+                                    style: const TextStyle(color: Colors.white),
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.check,
                                     color: Colors.white,
                                   )
