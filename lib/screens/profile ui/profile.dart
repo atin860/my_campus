@@ -1,9 +1,13 @@
+import 'dart:developer';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_campus/screens/bottombar_scr/help_support.dart';
-import 'package:my_campus/screens/bottombar_scr/profile%20ui/notification.dart';
-import 'package:my_campus/screens/bottombar_scr/profile%20ui/per_info.dart';
-import 'package:my_campus/screens/bottombar_scr/profile%20ui/privacy_seq.dart';
+import 'package:my_campus/screens/profile%20ui/help_support.dart';
+import 'package:my_campus/screens/profile%20ui/notification.dart';
+import 'package:my_campus/screens/profile%20ui/privacy_seq.dart';
+import 'package:my_campus/screens/helper/helper.dart';
+import 'package:my_campus/screens/profile%20ui/user_data.dart';
+import 'package:my_campus/service/firebase_database.dart';
 import 'package:my_campus/widget/constant.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,21 +21,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // You can define any state variables here if needed.
   String userName = "Atin Sharma";
   String userEmail = "atin.vSafe.com";
+  final FireStoreService fireStoreService = FireStoreService();
+  final Links links = Links();
+  Map user = {};
+  String? imageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
+  void getUser() async {
+    log("chalo");
+    Map data = await FireStoreService.getUser();
+    log("data $data");
+    if (mounted) {
+      setState(() {
+        // Your state update logic here
+        user = data;
+        print(user);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Gradient
           Container(
-            decoration: const BoxDecoration(
-                // gradient: LinearGradient(
-                //   begin: Alignment.topCenter,
-                //   end: Alignment.bottomCenter,
-                //   colors: [Color(0xff1a73e8), Color(0xff4285f4)],
-                // ),
-                color: kappbarback),
+            decoration: const BoxDecoration(color: kappbarback),
           ),
           // Profile Info
           Column(
@@ -54,13 +74,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildProfileHeader() {
     return Column(
       children: [
-        const CircleAvatar(
-          radius: 70,
-          backgroundImage: AssetImage('assets/img/atin.jpeg'), // Add your image
+        ClipOval(
+          child: Image.asset(
+            "assets/logo/logo.gif",
+            width: 150,
+            height: 150,
+            fit: BoxFit.cover,
+          ),
         ),
         const SizedBox(height: 10),
         Text(
-          userName,
+          user['Name'] ?? "",
           style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -81,55 +105,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // Profile Details with Cards for Info, Settings, and Actions
   Widget _buildProfileDetails() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(40),
-          topRight: Radius.circular(40),
+    return FadeInUp(
+      duration: const Duration(seconds: 1),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40),
+            topRight: Radius.circular(40),
+          ),
         ),
-      ),
-      child: ListView(
-        children: [
-          _buildProfileCard(
-            icon: Icons.person,
-            title: "Personal Info",
-            subtitle: "View and update your personal details",
-            onTap: () {
-              Get.to(() => PerInfo());
-            },
-          ),
-          _buildProfileCard(
-            icon: Icons.lock,
-            title: "Privacy Settings",
-            subtitle: "Manage your account privacy",
-            onTap: () {
-              // Navigate to Privacy Settings
-              Get.to(() => PrivacySettingsScreen());
-            },
-          ),
-          _buildProfileCard(
-            icon: Icons.notifications,
-            title: "Notifications",
-            subtitle: "Manage your notification preferences",
-            onTap: () {
-              // Navigate to Notifications
-              Get.to(() => NotificationsScreen());
-            },
-          ),
-          _buildProfileCard(
-            icon: Icons.help,
-            title: "Help & Support",
-            subtitle: "Get help and find answers",
-            onTap: () {
-              // Navigate to Help & Support
-              Get.to(() => HelpSupportScreen());
-            },
-          ),
-          const SizedBox(height: 30),
-          _buildLogoutButton(),
-        ],
+        child: ListView(
+          children: [
+            _buildProfileCard(
+              icon: Icons.person,
+              title: "Personal Info",
+              subtitle: "View and update your personal details",
+              onTap: () {
+                Get.to(() => const UserData());
+              },
+            ),
+            _buildProfileCard(
+              icon: Icons.lock,
+              title: "Privacy Settings",
+              subtitle: "Manage your account privacy",
+              onTap: () {
+                // Navigate to Privacy Settings
+                Get.to(() => const PrivacySettingsScreen());
+              },
+            ),
+            _buildProfileCard(
+              icon: Icons.notifications,
+              title: "Notifications",
+              subtitle: "Manage your notification preferences",
+              onTap: () {
+                // Navigate to Notifications
+                Get.to(() => const NotificationsScreen());
+              },
+            ),
+            _buildProfileCard(
+              icon: Icons.help,
+              title: "Help & Support",
+              subtitle: "Get help and find answers",
+              onTap: () {
+                // Navigate to Help & Support
+                Get.to(() => const HelpSupportScreen());
+              },
+            ),
+            const SizedBox(height: 30),
+            _buildLogoutButton(),
+          ],
+        ),
       ),
     );
   }

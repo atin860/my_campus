@@ -4,7 +4,6 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/widget/app_button.dart';
-import 'package:my_campus/widget/constant.dart';
 import 'package:my_campus/widget/textfield.dart';
 import 'package:my_campus/widget/toast_msg.dart';
 

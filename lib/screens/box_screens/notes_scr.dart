@@ -1,67 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_campus/service/firebase_database.dart';
 import 'package:my_campus/widget/appbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AssignmentListScreen extends StatefulWidget {
+class NotesScreen extends StatefulWidget {
   @override
-  _AssignmentListScreenState createState() => _AssignmentListScreenState();
+  _NotesScreenState createState() => _NotesScreenState();
 }
 
-class _AssignmentListScreenState extends State<AssignmentListScreen> {
+class _NotesScreenState extends State<NotesScreen> {
+  FireStoreService fireStoreService = FireStoreService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:MyAppBar(title: "'Uploaded Assignments'"),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('assignments').snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-        
-            if (snapshot.hasError) {
-              return Center(child: Text('Error loading assignments.'));
-            }
-        
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Center(child: Text('No assignments uploaded.'));
-            }
-        
-            // Get the list of documents (assignments)
-            final assignments = snapshot.data!.docs;
-        
-            return ListView.builder(
-              itemCount: assignments.length,
-              itemBuilder: (context, index) {
-                // Get assignment data
-                var assignment = assignments[index];
-                var fileName = assignment['file_name'];
-                var fileUrl = assignment['url'];
-                var uploadDate = assignment['uploaded_at'];
-        
-                return Card(color: const Color.fromARGB(255, 167, 219, 214),
-                  child: ListTile(
-                    leading: Icon(Icons.file_present),
-                    title: Text(fileName,style: TextStyle(fontSize: 15),),
-                    subtitle: Text('Uploaded on: $uploadDate'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.download),
-                      onPressed: () {
-                        // Open the file URL (download or view)
-                        _openFile(fileUrl);
+        appBar: MyAppBar(title: "NOTES"),
+        body: Column(
+          children: [
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: fireStoreService.fetchUploadedFilesToNOtes(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Center(child: Text('No notes uploaded yet.'));
+                  }
+                  final files = snapshot.data!.docs;
+
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.builder(
+                      itemCount: files.length,
+                      itemBuilder: (context, index) {
+                        final file = files[index];
+                        return Card(
+                          color: Colors.blue[100],
+                          child: ListTile(
+                            title: Text(file['file_name']),
+                            subtitle: Text(
+                              'Uploaded: ${DateTime.parse(file['uploaded_at']).toLocal()}',
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(Icons.download),
+                              onPressed: () {
+                                final url = file['url'];
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('File URL: $url')),
+                                );
+                              },
+                            ),
+                          ),
+                        );
                       },
                     ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
+                  );
+                },
+              ),
+            ),
+          ],
+        ));
   }
 
   // Function to open/download the file (e.g., using url_launcher)
