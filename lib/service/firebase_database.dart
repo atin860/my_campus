@@ -1,17 +1,21 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:my_campus/widget/toast_msg.dart';
 
 class FireStoreService {
-  static final FirebaseFirestore _instance = FirebaseFirestore.instance;
-  static final CollectionReference users = _instance.collection('users');
+  static final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  static final CollectionReference users = firestore.collection('users');
   static final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage storage = FirebaseStorage.instance;
 
-   // Method to get user data based on userId
+  // Method to get user data based on userId
   static Future<DocumentSnapshot> getUserData(String userId) async {
     try {
-      // Fetching user data from Firestore using the userId
-      DocumentSnapshot userDoc = await _instance.collection('users').doc(userId).get();
+      DocumentSnapshot userDoc =
+          await firestore.collection('users').doc(userId).get();
       return userDoc;
     } catch (e) {
       print('Error fetching user data: $e');
@@ -60,6 +64,94 @@ class FireStoreService {
   // Get the email of the currently signed-in user
   String? getCurrentUserEmail() {
     User? user = getCurrentUser();
-    return user?.email; // Returns null if no user is signed in
+    return user?.email;
+  }
+
+////////////// /////////////////////////////////////////////////////////////////////////////////
+  /// Save Data in notes Collection
+  Future<String> uploadFileToNotes(File file, String fileName) async {
+    try {
+      Reference ref = storage.ref().child('notes/$fileName');
+      UploadTask uploadTask = ref.putFile(file);
+      TaskSnapshot snapshot = await uploadTask;
+      return await snapshot.ref.getDownloadURL();
+    } catch (e) {
+      throw Exception("Failed to upload file: $e");
+    }
+  }
+
+  Future<void> saveFileMetadataToNotes(
+      String fileName, String downloadUrl) async {
+    try {
+      await firestore.collection('notes').add({
+        'file_name': fileName,
+        'url': downloadUrl,
+        'uploaded_at': DateTime.now().toIso8601String(),
+      });
+    } catch (e) {
+      throw Exception("Failed to save file metadata: $e");
+    }
+  }
+
+  Stream<QuerySnapshot> fetchUploadedFilesToNOtes() {
+    return firestore
+        .collection('notes')
+        .orderBy('uploaded_at', descending: true)
+        .snapshots();
+  }
+
+/////// /////////////////////////////////////////////////////////////////////////////////
+  ///Save Data in Assignmnet Collection
+  Future<String> uploadFileToAssignmnet(File file, String fileName) async {
+    try {
+      Reference ref = storage.ref().child('assignments/$fileName');
+      UploadTask uploadTask = ref.putFile(file);
+      TaskSnapshot snapshot = await uploadTask;
+      return await snapshot.ref.getDownloadURL();
+    } catch (e) {
+      throw Exception("Failed to upload file: $e");
+    }
+  }
+
+  Future<void> saveFileMetadataToAssignment(
+      String fileName, String downloadUrl) async {
+    try {
+      await firestore.collection('assignments').add({
+        'file_name': fileName,
+        'url': downloadUrl,
+        'uploaded_at': DateTime.now().toIso8601String(),
+      });
+    } catch (e) {
+      throw Exception("Failed to save file metadata: $e");
+    }
+  }
+
+  Stream<QuerySnapshot> fetchUploadedFilesToAssignmnet() {
+    return firestore
+        .collection('assignments')
+        .orderBy('uploaded_at', descending: true)
+        .snapshots();
+  }
+
+  String? getUserId() {
+    return _auth.currentUser?.uid;
+  }
+////////////////////////////////////////////////////////////////////
+
+  Future<int> getTotalSemesterDays() async {
+    DocumentSnapshot doc =
+        await firestore.collection('config').doc('semester').get();
+    return doc.exists ? doc['totalDays'] ?? 0 : 0;
+  }
+
+  Future<List<Timestamp>> getAttendanceRecords() async {
+    String? userId = _auth.currentUser?.uid;
+    if (userId == null) return [];
+    DocumentSnapshot doc =
+        await firestore.collection('attendances').doc(userId).get();
+    if (doc.exists && doc.data() != null) {
+      return List<Timestamp>.from(doc['records'] ?? []);
+    }
+    return [];
   }
 }

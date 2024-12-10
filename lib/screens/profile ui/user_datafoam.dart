@@ -1,11 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/service/firebase_database.dart';
-import 'package:my_campus/service/firebase_storage.dart';
 import 'package:my_campus/widget/app_button.dart';
 import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
@@ -13,25 +14,25 @@ import 'package:my_campus/widget/textfield.dart';
 import 'package:my_campus/widget/toast_msg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // For Firestore
 
-class UserDataScr extends StatefulWidget {
-  const UserDataScr({super.key});
+class UserDataForm extends StatefulWidget {
+  const UserDataForm({super.key});
 
   @override
-  State<UserDataScr> createState() => _UserDataScrState();
+  State<UserDataForm> createState() => _UserDataFormState();
 }
 
-class _UserDataScrState extends State<UserDataScr> {
+class _UserDataFormState extends State<UserDataForm> {
   TextEditingController name = TextEditingController();
   TextEditingController rollNo = TextEditingController();
   TextEditingController number = TextEditingController();
   final TextEditingController dob = TextEditingController();
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+
   String? selectedBranch;
   String? selectedYear;
   String? imageUrl;
   File? pickedImage;
-
   final ImagePicker imgpicker = ImagePicker();
-
   List<String> branches = ['AI', 'AIML'];
   List<String> years = ['2nd Year', '3rd Year', '4th Year'];
 
@@ -43,7 +44,8 @@ class _UserDataScrState extends State<UserDataScr> {
 
   // Function to fetch user data from Firestore
   Future<void> fetchUserData() async {
-    String userId = auth.currentUser!.uid; // Assuming you're using FirebaseAuth to get the current user's UID
+    String userId = auth.currentUser!
+        .uid; // Assuming you're using FirebaseAuth to get the current user's UID
 
     // Fetch the user data from Firestore
     DocumentSnapshot userDoc = await FireStoreService.getUserData(userId);
@@ -54,12 +56,14 @@ class _UserDataScrState extends State<UserDataScr> {
 
       setState(() {
         name.text = userData['Name'] ?? '';
-        rollNo.text = userData['Roll_No.'].toString(); // Assuming it's stored as a number
+        rollNo.text =
+            userData['Roll_No'].toString(); // Assuming it's stored as a number
         number.text = userData['Mobile_No'].toString();
         dob.text = userData['DOB'] ?? '';
         selectedBranch = userData['Branch'];
         selectedYear = userData['Year'];
-        imageUrl = userData['image']; // If the user has an uploaded profile image
+        imageUrl =
+            userData['image']; // If the user has an uploaded profile image
       });
     }
   }
@@ -103,7 +107,7 @@ class _UserDataScrState extends State<UserDataScr> {
                                     fit: BoxFit.cover,
                                   )
                                 : Image.asset(
-                                    "assets/img/atin.jpeg",
+                                    "assets/logo/logo.gif",
                                     width: 150,
                                     height: 150,
                                     fit: BoxFit.cover,
@@ -128,14 +132,12 @@ class _UserDataScrState extends State<UserDataScr> {
                 ),
                 const SizedBox(height: 20),
                 MyTextField(
-                  controller: name, label: 'Name', hintText: "Atin Sharma"
-                ),
+                    controller: name, label: 'Name', hintText: "Atin Sharma"),
                 MyTextField(
-                  keyboardType: TextInputType.number,
-                  controller: rollNo,
-                  label: 'Roll Number',
-                  hintText: "2204221520010"
-                ),
+                    keyboardType: TextInputType.number,
+                    controller: rollNo,
+                    label: 'Roll Number',
+                    hintText: "2204221520010"),
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
                   margin: const EdgeInsets.all(10),
@@ -270,23 +272,55 @@ class _UserDataScrState extends State<UserDataScr> {
   // Function to pick an image from the camera or gallery
   void pickImage(ImageSource imageType) async {
     try {
+      // Pick an image from the specified source (camera or gallery)
       final photo = await ImagePicker().pickImage(source: imageType);
-      if (photo == null) return;
+      if (photo == null) return; // No image selected, return early
+
       final tempImage = File(photo.path);
       setState(() {
-        pickedImage = tempImage;
-      });
-      StorageService.uploadFile("profilePic", "fileName.jpg", file: pickedImage)
-          .then((value) {
-        FireStoreService.updateUser({"image": value});
-        print("File uploaded \n $value");
+        pickedImage = tempImage; // Set the picked image in the state
       });
 
+      // Get the current user's email and replace special characters to make it a valid file name
+      String userEmail = FirebaseAuth.instance.currentUser!.email!;
+      String sanitizedEmail = userEmail.replaceAll(
+          RegExp(r'[^a-zA-Z0-9]'), '_'); // Replace special characters
+
+      // Use the sanitized email as the file name
+      String fileName =
+          "$sanitizedEmail-profile.jpg"; // Use sanitized email as file name
+      String uploadPath =
+          "profilePictures/$fileName"; // Path in Firebase Storage
+
+      // Upload the file to Firebase Storage
+      UploadTask uploadTask =
+          FirebaseStorage.instance.ref(uploadPath).putFile(tempImage);
+
+      // Wait for the upload to complete and get the download URL
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      // After upload, update the user's profile image URL in Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        "image": downloadUrl, // Store the image URL in Firestore
+      });
+
+      // Optionally, update the local state to reflect the new image
+      setState(() {
+        imageUrl = downloadUrl;
+      });
+
+      // Close the bottom sheet or dialog
       Get.back();
+
+      // Show a success message
+      successMessage("Profile image updated successfully!");
     } catch (error) {
-      debugPrint(error.toString());
+      debugPrint("Error uploading image: $error");
     }
-    successMessage("Update Image");
   }
 
   // Function to add user data to Firestore
@@ -294,7 +328,7 @@ class _UserDataScrState extends State<UserDataScr> {
     FocusManager.instance.primaryFocus!.unfocus();
     Map<String, dynamic> users = {
       "Name": name.text,
-      "Roll_No.": int.parse(rollNo.text.trim()),
+      "Roll_No": int.parse(rollNo.text.trim()),
       "Branch": selectedBranch,
       "Year": selectedYear,
       "DOB": dob.text,

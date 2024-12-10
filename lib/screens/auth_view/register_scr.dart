@@ -94,7 +94,8 @@ class _RegisterScrState extends State<RegisterScr> {
                       duration: const Duration(milliseconds: 1800),
                       child: TextButton(
                           onPressed: () {
-                            Get.to(() => LoginScr());
+                            if (validate())
+                              controller.login(email.text, password.text);
                           },
                           child: Text(
                             "Login",
