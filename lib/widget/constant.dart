@@ -29,7 +29,7 @@ const kappbarTextStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 20.0,
     color: Color.fromARGB(255, 255, 255, 255));
-
+//for add text
 var advText = TextMarquee(
   "This app is developed by Atin Sharma and Team. Contact for more information.",
   rtl: false,

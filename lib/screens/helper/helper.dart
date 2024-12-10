@@ -161,6 +161,9 @@ class Helper {
 // slider image list
   final List<String> imgList = [
     'assets/img/back2.jpg',
+    'assets/img/back3.jpg',
+    'assets/img/back4.JPG',
+    'assets/img/back6.JPG',
     'assets/img/atin.jpeg',
     // Add more images here
   ];

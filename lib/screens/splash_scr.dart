@@ -16,12 +16,11 @@ class _SplashScrState extends State<SplashScr> {
   //     );
   //   });
   // }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         // decoration: const BoxDecoration(
@@ -33,14 +32,13 @@ class _SplashScrState extends State<SplashScr> {
         //     Color.fromARGB(255, 21, 236, 229)
         //   ],
         // )),
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Center(
                 child: Image(image: AssetImage("assets/logo/logo.gif")),
               ),
-
               // FadeInDown(
               //   duration: const Duration(milliseconds: 1800),
               //   child: SizedBox(
@@ -58,7 +56,7 @@ class _SplashScrState extends State<SplashScr> {
               //         fontWeight: FontWeight.bold,
               //         color: Colors.white),
               //   ),
-              // )
+              // ),
               // CircularProgressIndicator(), // Optional: Show a loading indicator
             ],
           ),

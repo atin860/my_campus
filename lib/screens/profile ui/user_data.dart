@@ -77,7 +77,7 @@ class _UserDataState extends State<UserData> {
         padding: const EdgeInsets.all(10.0),
         child: FloatingActionButton(
           onPressed: () {
-            Get.to(() => UserDataScr());
+            Get.to(() => UserDataForm());
           },
           backgroundColor: Colors.red,
           child: const Icon(

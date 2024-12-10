@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/screens/profile%20ui/privacy_seq.dart';
+import 'package:my_campus/screens/profile%20ui/user_data.dart';
+import 'package:my_campus/screens/profile%20ui/user_datafoam.dart';
 import 'package:my_campus/service/firebase_database.dart';
 import 'package:my_campus/widget/constant.dart';
 import 'package:share_plus/share_plus.dart';
@@ -134,7 +136,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   leading: const Icon(Icons.person),
                   title: const Text('Profile'),
                   onTap: () {
-                    // Get.to(() => UserData());
+                    Get.to(() => UserData());
                   },
                 ),
                 ListTile(

@@ -111,17 +111,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               )),
         ],
-        title: "Hello ${user["Name"]}!",
+        title: user['Name'] ?? "Hello User!",
       ),
-      drawer: const MyDrawer(),
+      drawer: MyDrawer(),
       body: ListView(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Column(
               children: [
-                advText,
-                const SizedBox(
+                //  advText,
+                SizedBox(
                   height: 10,
                 ),
                 helper.ImageSlider(),

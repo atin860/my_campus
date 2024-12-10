@@ -2,21 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:my_campus/widget/appbar.dart';
-import 'package:my_campus/widget/constant.dart'; // For copying to clipboard
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ChatBot(),
-    );
-  }
-}
+import 'package:my_campus/widget/constant.dart';
 
 class ChatBot extends StatefulWidget {
   @override
@@ -27,8 +15,28 @@ class _ChatBotState extends State<ChatBot> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   List<Map<String, dynamic>> messages = [];
-
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadChatHistory();
+  }
+
+  Future<void> _loadChatHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? chatData = prefs.getString('chat_history');
+    if (chatData != null) {
+      setState(() {
+        messages = List<Map<String, dynamic>>.from(json.decode(chatData));
+      });
+    }
+  }
+
+  Future<void> _saveChatHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('chat_history', json.encode(messages));
+  }
 
   Future<void> _sendMessage() async {
     if (_controller.text.isEmpty) return;
@@ -48,7 +56,13 @@ class _ChatBotState extends State<ChatBot> {
       _isLoading = false;
     });
 
-    // Scroll to the bottom after adding a new message
+    _saveChatHistory();
+
+    // Scroll to the bottom
+    _scrollToBottom();
+  }
+
+  void _scrollToBottom() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 300),
@@ -104,90 +118,104 @@ class _ChatBotState extends State<ChatBot> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(title: "Chat with Jarvis"),
-      body: Column(
+      appBar: const MyAppBar(title: "AI CAMPUS"),
+      body: Stack(
         children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(10.0),
-              itemCount: messages.length + (_isLoading ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (_isLoading && index == messages.length) {
-                  return const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5.0),
-                      child: Row(
-                        children: [
-                          CircularProgressIndicator(strokeWidth: 2.0),
-                          SizedBox(width: 10),
-                          Text(
-                            'Jarvis is typing...',
-                            style: TextStyle(color: Colors.grey),
+          Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.all(10.0),
+                  itemCount: messages.length + (_isLoading ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (_isLoading && index == messages.length) {
+                      return const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          child: Row(
+                            children: [
+                              CircularProgressIndicator(strokeWidth: 1.0),
+                              SizedBox(width: 10),
+                              Text(
+                                'typing...',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
+                        ),
+                      );
+                    }
 
-                final message = messages[index];
-                bool isUserMessage = message['role'] == 'user';
+                    final message = messages[index];
+                    bool isUserMessage = message['role'] == 'user';
 
-                return GestureDetector(
-                  onLongPress: () => _copyToClipboard(message['content'] ?? ''),
-                  child: Align(
-                    alignment: isUserMessage
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Container(
-                      padding: const EdgeInsets.all(15.0),
-                      margin: const EdgeInsets.symmetric(vertical: 5.0),
-                      decoration: BoxDecoration(
-                        color: isUserMessage ? kappbarback : Colors.green[300],
-                        borderRadius: BorderRadius.circular(15.0),
+                    return GestureDetector(
+                      onLongPress: () =>
+                          _copyToClipboard(message['content'] ?? ''),
+                      child: Align(
+                        alignment: isUserMessage
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.all(15.0),
+                          margin: const EdgeInsets.symmetric(vertical: 5.0),
+                          decoration: BoxDecoration(
+                            color:
+                                isUserMessage ? kappbarback : Colors.green[300],
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Text(
+                            message['content'] ?? '',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ),
-                      child: Text(
-                        message['content'] ?? '',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          hintText: 'Type your message...',
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Type your message...',
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                    const SizedBox(width: 10),
+                    CircleAvatar(
+                      backgroundColor: kappbarback,
+                      child: IconButton(
+                        icon: const Icon(Icons.send, color: Colors.white),
+                        onPressed: _sendMessage,
                       ),
                     ),
-                  ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                CircleAvatar(
-                  backgroundColor: kappbarback,
-                  child: IconButton(
-                    icon: const Icon(Icons.send, color: Colors.white),
-                    onPressed: _sendMessage,
-                  ),
-                ),
-              ],
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 80,
+            right: 20,
+            child: FloatingActionButton(
+              onPressed: _scrollToBottom,
+              child: const Icon(Icons.arrow_downward),
             ),
           ),
         ],

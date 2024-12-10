@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_campus/Controller/controller.dart';
 import 'package:my_campus/service/firebase_database.dart';
-import 'package:my_campus/service/firebase_storage.dart';
 import 'package:my_campus/widget/app_button.dart';
 import 'package:my_campus/widget/appbar.dart';
 import 'package:my_campus/widget/constant.dart';
@@ -15,14 +14,14 @@ import 'package:my_campus/widget/textfield.dart';
 import 'package:my_campus/widget/toast_msg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // For Firestore
 
-class UserDataScr extends StatefulWidget {
-  const UserDataScr({super.key});
+class UserDataForm extends StatefulWidget {
+  const UserDataForm({super.key});
 
   @override
-  State<UserDataScr> createState() => _UserDataScrState();
+  State<UserDataForm> createState() => _UserDataFormState();
 }
 
-class _UserDataScrState extends State<UserDataScr> {
+class _UserDataFormState extends State<UserDataForm> {
   TextEditingController name = TextEditingController();
   TextEditingController rollNo = TextEditingController();
   TextEditingController number = TextEditingController();
@@ -108,7 +107,7 @@ class _UserDataScrState extends State<UserDataScr> {
                                     fit: BoxFit.cover,
                                   )
                                 : Image.asset(
-                                    "assets/img/atin.jpeg",
+                                    "assets/logo/logo.gif",
                                     width: 150,
                                     height: 150,
                                     fit: BoxFit.cover,
